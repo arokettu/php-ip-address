@@ -1,0 +1,27 @@
+{
+    "name": "arokettu/ip-address",
+    "type": "library",
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Arokettu\\IP\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Arokettu\\IP\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "sandfox.dev/code-standard": "^1.2024.07.20",
+        "squizlabs/php_codesniffer": "*"
+    }
+}
