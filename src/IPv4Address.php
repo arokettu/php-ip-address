@@ -8,10 +8,12 @@ use DomainException;
 
 final readonly class IPv4Address implements AnyIPAddress
 {
+    use Helpers\IPAddressCommonTrait;
+
     public function __construct(
         public string $bytes
     ) {
-        if (\strlen($this->bytes) !== 4) {
+        if (\strlen($bytes) !== 4) {
             throw new DomainException('IPv4 address must be exactly 4 bytes.');
         }
     }
@@ -38,20 +40,5 @@ final readonly class IPv4Address implements AnyIPAddress
             $compare > 0 => 1,
             default => 0,
         };
-    }
-
-    public function toBytes(): string
-    {
-        return $this->bytes;
-    }
-
-    public function toString(): string
-    {
-        return inet_ntop($this->bytes);
-    }
-
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 }

@@ -8,6 +8,6 @@ use Stringable;
 
 interface AnyIPAddress extends Stringable
 {
-    public function toBytes(): string;
+    public function getBytes(): string;
     public function toString(): string;
 }

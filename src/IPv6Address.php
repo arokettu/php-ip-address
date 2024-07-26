@@ -8,10 +8,12 @@ use DomainException;
 
 final readonly class IPv6Address implements AnyIPAddress
 {
+    use Helpers\IPAddressCommonTrait;
+
     public function __construct(
         public string $bytes
     ) {
-        if (\strlen($this->bytes) !== 16) {
+        if (\strlen($bytes) !== 16) {
             throw new DomainException('IPv6 address must be exactly 16 bytes.');
         }
     }
@@ -38,20 +40,5 @@ final readonly class IPv6Address implements AnyIPAddress
             $compare > 0 => 1,
             default => 0,
         };
-    }
-
-    public function toBytes(): string
-    {
-        return $this->bytes;
-    }
-
-    public function toString(): string
-    {
-        return inet_ntop($this->bytes);
-    }
-
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 }
