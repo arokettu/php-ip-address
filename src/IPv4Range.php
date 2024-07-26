@@ -6,6 +6,9 @@ namespace Arokettu\IP;
 
 use DomainException;
 
+/**
+ * @template-implements AnyIPRange<IPv4Address>
+ */
 final readonly class IPv4Range implements AnyIPRange
 {
     use Helpers\IPRangeCommonTrait;
@@ -34,5 +37,30 @@ final readonly class IPv4Range implements AnyIPRange
         }
 
         $this->maskBytes = $maskBytes;
+    }
+
+    public function equals(self $range): bool
+    {
+        return $this->mask === $range->mask && $this->bytes === $range->bytes;
+    }
+
+    public function contains(self|IPv4Address $address): bool
+    {
+        if ($address instanceof self && $address->mask < $this->mask) {
+            // it's a wider range, definitely false
+            return false;
+        }
+
+        return ($address->bytes & $this->maskBytes) === $this->bytes;
+    }
+
+    public function getFirstAddress(): IPv4Address
+    {
+        return new IPv4Address($this->bytes);
+    }
+
+    public function getLastAddress(): IPv4Address
+    {
+        return new IPv4Address($this->bytes | ~$this->maskBytes);
     }
 }
