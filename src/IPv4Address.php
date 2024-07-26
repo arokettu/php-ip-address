@@ -43,4 +43,9 @@ final readonly class IPv4Address implements AnyIPAddress
             default => 0,
         };
     }
+
+    public function equals(self $address): bool
+    {
+        return $this->bytes === $address->bytes;
+    }
 }

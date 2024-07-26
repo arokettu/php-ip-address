@@ -6,6 +6,10 @@ namespace Arokettu\IP;
 
 use Stringable;
 
+/**
+ * @method int compare(self $address)
+ * @method bool equals(self $address)
+ */
 interface AnyIPAddress extends Stringable
 {
     public function getBytes(): string;
