@@ -15,7 +15,6 @@ final readonly class IPv4Range implements AnyIPRange
 
     private const BYTES = 4;
     private const BITS = 32;
-    private const ALL_ZEROS = "\0\0\0\0";
 
     public string $maskBytes;
 
@@ -23,7 +22,7 @@ final readonly class IPv4Range implements AnyIPRange
         public string $bytes,
         public int $mask,
     ) {
-        if (\strlen($bytes) !== 4) {
+        if (\strlen($bytes) !== self::BYTES) {
             throw new DomainException('Base address for the IPv4 range must be exactly 4 bytes');
         }
         if ($mask < 0 || $mask > self::BITS) {
@@ -37,6 +36,30 @@ final readonly class IPv4Range implements AnyIPRange
         }
 
         $this->maskBytes = $maskBytes;
+    }
+
+    public static function fromBytes(string $bytes, int $mask, bool $strict = false): self
+    {
+        if ($strict) {
+            return new self($bytes, $mask);
+        }
+
+        if (\strlen($bytes) !== self::BYTES) {
+            throw new DomainException('Base address for the IPv4 range must be exactly 4 bytes');
+        }
+        if ($mask < 0) {
+            if ($mask < -self::BITS) {
+                throw new DomainException('Negative mask for the IPv4 range must be greater than or equal to -32');
+            }
+            $mask += self::BITS + 1;
+        }
+        if ($mask < 0 || $mask > self::BITS) {
+            throw new DomainException('IPv4 mask must be in range 0-32');
+        }
+
+        $maskBytes = Helpers\BytesHelper::buildMaskBytes(self::BYTES, $mask);
+
+        return new self($bytes & $maskBytes, $mask);
     }
 
     public function equals(self $range): bool

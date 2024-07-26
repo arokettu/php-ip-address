@@ -18,7 +18,7 @@ final readonly class IPAddress
         return match (\strlen($bytes)) {
             4 => IPv4Address::fromBytes($bytes),
             16 => IPv6Address::fromBytes($bytes),
-            default => throw new DomainException('IP Address was not recognized'),
+            default => throw new DomainException('IP address was not recognized'),
         };
     }
 
