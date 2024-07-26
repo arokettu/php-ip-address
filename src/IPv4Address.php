@@ -10,11 +10,13 @@ final readonly class IPv4Address implements AnyIPAddress
 {
     use Helpers\IPAddressCommonTrait;
 
+    private const BYTES = 4;
+
     public function __construct(
         public string $bytes
     ) {
         if (\strlen($bytes) !== 4) {
-            throw new DomainException('IPv4 address must be exactly 4 bytes.');
+            throw new DomainException('IPv4 address must be exactly 4 bytes');
         }
     }
 
@@ -26,8 +28,8 @@ final readonly class IPv4Address implements AnyIPAddress
     public static function fromString(string $string): self
     {
         $bytes = inet_pton($string);
-        if ($bytes === false || \strlen($bytes) !== 4) {
-            throw new DomainException('$string must be a valid IPv4 address.');
+        if ($bytes === false || \strlen($bytes) !== self::BYTES) {
+            throw new DomainException('$string must be a valid IPv4 address');
         }
         return self::fromBytes($bytes);
     }

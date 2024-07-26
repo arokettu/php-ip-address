@@ -10,11 +10,13 @@ final readonly class IPv6Address implements AnyIPAddress
 {
     use Helpers\IPAddressCommonTrait;
 
+    private const BYTES = 16;
+
     public function __construct(
         public string $bytes
     ) {
         if (\strlen($bytes) !== 16) {
-            throw new DomainException('IPv6 address must be exactly 16 bytes.');
+            throw new DomainException('IPv6 address must be exactly 16 bytes');
         }
     }
 
@@ -26,8 +28,8 @@ final readonly class IPv6Address implements AnyIPAddress
     public static function fromString(string $string): self
     {
         $bytes = inet_pton($string);
-        if ($bytes === false || \strlen($bytes) !== 16) {
-            throw new DomainException('$string must be a valid IPv6 address.');
+        if ($bytes === false || \strlen($bytes) !== self::BYTES) {
+            throw new DomainException('$string must be a valid IPv6 address');
         }
         return self::fromBytes($bytes);
     }

@@ -26,7 +26,7 @@ final readonly class IPAddress
     {
         $bytes = inet_pton($string);
         if ($bytes === false) {
-            throw new DomainException('$string must be a valid IP address.');
+            throw new DomainException('$string must be a valid IP address');
         }
         return self::fromBytes($bytes);
     }
