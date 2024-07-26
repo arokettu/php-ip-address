@@ -13,25 +13,28 @@ final readonly class IPRange
     {
     }
 
-    public static function fromBytes(string $bytes, int $mask, bool $strict = false): IPv4Range|IPv6Range
+    public static function fromBytes(string $bytes, int $prefix, bool $strict = false): IPv4Range|IPv6Range
     {
         return match (\strlen($bytes)) {
-            4 => IPv4Range::fromBytes($bytes, $mask, $strict),
-            16 => IPv6Range::fromBytes($bytes, $mask, $strict),
+            4 => IPv4Range::fromBytes($bytes, $prefix, $strict),
+            16 => IPv6Range::fromBytes($bytes, $prefix, $strict),
             default => throw new DomainException('IP range was not recognized'),
         };
     }
 
-    public static function fromString(string $string, int|null $mask = null, bool $strict = false): IPv4Range|IPv6Range
-    {
+    public static function fromString(
+        string $string,
+        int|null $prefix = null,
+        bool $strict = false
+    ): IPv4Range|IPv6Range {
         try {
-            return IPv4Range::fromString($string, $mask, $strict);
+            return IPv4Range::fromString($string, $prefix, $strict);
         } catch (DomainException $e4) {
             // ignore
         }
 
         try {
-            return IPv6Range::fromString($string, $mask, $strict);
+            return IPv6Range::fromString($string, $prefix, $strict);
         } catch (DomainException $e6) {
             // ignore
         }

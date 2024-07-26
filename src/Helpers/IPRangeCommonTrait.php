@@ -6,8 +6,8 @@ namespace Arokettu\IP\Helpers;
 
 trait IPRangeCommonTrait
 {
-    public readonly int $mask;
     public readonly string $bytes;
+    public readonly int $prefix;
     public readonly string $maskBytes;
 
 
@@ -16,9 +16,9 @@ trait IPRangeCommonTrait
         return $this->bytes;
     }
 
-    public function getMask(): int
+    public function getPrefix(): int
     {
-        return $this->mask;
+        return $this->prefix;
     }
 
     public function getMaskBytes(): string
@@ -28,7 +28,7 @@ trait IPRangeCommonTrait
 
     public function toString(): string
     {
-        return sprintf("%s/%d", inet_ntop($this->bytes), $this->mask);
+        return sprintf("%s/%d", inet_ntop($this->bytes), $this->prefix);
     }
 
     public function __toString(): string

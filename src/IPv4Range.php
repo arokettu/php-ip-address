@@ -21,16 +21,16 @@ final readonly class IPv4Range implements AnyIPRange
 
     public function __construct(
         public string $bytes,
-        public int $mask,
+        public int $prefix,
     ) {
         if (\strlen($bytes) !== self::BYTES) {
             throw new DomainException('Base address for the IPv4 range must be exactly 4 bytes');
         }
-        if ($mask < 0 || $mask > self::BITS) {
-            throw new DomainException('IPv4 mask must be in range 0-32');
+        if ($prefix < 0 || $prefix > self::BITS) {
+            throw new DomainException('IPv4 prefix must be in range 0-32');
         }
 
-        $maskBytes = Helpers\BytesHelper::buildMaskBytes(self::BYTES, $mask);
+        $maskBytes = Helpers\BytesHelper::buildMaskBytes(self::BYTES, $prefix);
 
         if (($maskBytes & $bytes) !== $bytes) {
             throw new DomainException('IPv4 range is not in a normalized form');
@@ -39,40 +39,42 @@ final readonly class IPv4Range implements AnyIPRange
         $this->maskBytes = $maskBytes;
     }
 
-    public static function fromBytes(string $bytes, int $mask, bool $strict = false): self
+    public static function fromBytes(string $bytes, int $prefix, bool $strict = false): self
     {
         if ($strict) {
-            return new self($bytes, $mask);
+            return new self($bytes, $prefix);
         }
 
         if (\strlen($bytes) !== self::BYTES) {
             throw new DomainException('Base address for the IPv4 range must be exactly 4 bytes');
         }
-        if ($mask < 0) {
-            if ($mask < -self::BITS) {
-                throw new DomainException('Negative mask for the IPv4 range must be greater than or equal to -32');
+        if ($prefix < 0) {
+            if ($prefix < -self::BITS) {
+                throw new DomainException('Negative prefix for the IPv4 range must be greater than or equal to -32');
             }
-            $mask += self::BITS + 1;
+            $prefix += self::BITS + 1;
         }
-        if ($mask < 0 || $mask > self::BITS) {
-            throw new DomainException('IPv4 mask must be in range 0-32');
+        if ($prefix < 0 || $prefix > self::BITS) {
+            throw new DomainException('IPv4 prefix must be in range 0-32');
         }
 
-        $maskBytes = Helpers\BytesHelper::buildMaskBytes(self::BYTES, $mask);
+        $maskBytes = Helpers\BytesHelper::buildMaskBytes(self::BYTES, $prefix);
 
-        return new self($bytes & $maskBytes, $mask);
+        return new self($bytes & $maskBytes, $prefix);
     }
 
-    public static function fromString(string $string, int|null $mask = null, bool $strict = false): self
+    public static function fromString(string $string, int|null $prefix = null, bool $strict = false): self
     {
         if (str_contains($string, '/')) { // override mask
-            if ($strict && $mask !== null) {
-                throw new InvalidArgumentException('In strict mode mask cannot appear in both string and $mask param');
+            if ($strict && $prefix !== null) {
+                throw new InvalidArgumentException(
+                    'In strict mode prefix cannot appear in both string and $mask param'
+                );
             }
-            [$string, $maskStr] = explode('/', $string, 2);
-            $mask = \intval($maskStr); // succeeds but verify later
-            if (!is_numeric($maskStr) || $mask != $maskStr || $mask < 0) { // non-strict here
-                throw new DomainException(sprintf('Mask value "%s" appears to be invalid', $maskStr));
+            [$string, $prefixStr] = explode('/', $string, 2);
+            $prefix = \intval($prefixStr); // succeeds but verify later
+            if (!is_numeric($prefixStr) || $prefix != $prefixStr || $prefix < 0) { // non-strict here
+                throw new DomainException(sprintf('Prefix value "%s" appears to be invalid', $prefixStr));
             }
         }
 
@@ -84,17 +86,17 @@ final readonly class IPv4Range implements AnyIPRange
             ));
         }
 
-        return self::fromBytes($bytes, $mask, $strict);
+        return self::fromBytes($bytes, $prefix, $strict);
     }
 
     public function equals(self $range): bool
     {
-        return $this->mask === $range->mask && $this->bytes === $range->bytes;
+        return $this->prefix === $range->prefix && $this->bytes === $range->bytes;
     }
 
     public function contains(self|IPv4Address $address): bool
     {
-        if ($address instanceof self && $address->mask < $this->mask) {
+        if ($address instanceof self && $address->prefix < $this->prefix) {
             // it's a wider range, definitely false
             return false;
         }

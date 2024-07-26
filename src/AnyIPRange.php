@@ -16,7 +16,7 @@ use Stringable;
 interface AnyIPRange extends Stringable
 {
     public function getBytes(): string;
-    public function getMask(): int;
+    public function getPrefix(): int;
     public function getMaskBytes(): string;
     public function toString(): string;
 }
