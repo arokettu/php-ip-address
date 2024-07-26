@@ -71,7 +71,7 @@ final readonly class IPv6Range implements AnyIPRange
             }
             [$string, $maskStr] = explode('/', $string, 2);
             $mask = \intval($maskStr); // succeeds but verify later
-            if (!is_numeric($maskStr) || $mask != $maskStr) { // non-strict here
+            if (!is_numeric($maskStr) || $mask != $maskStr || $mask < 0) { // non-strict here
                 throw new DomainException(sprintf('Mask value "%s" appears to be invalid', $maskStr));
             }
         }
