@@ -8,7 +8,10 @@ use DomainException;
 
 final readonly class IPAddress
 {
-    // disable construct
+    /**
+     * Disable constructor
+     * @codeCoverageIgnore
+     */
     private function __construct()
     {
     }
@@ -18,7 +21,10 @@ final readonly class IPAddress
         return match (\strlen($bytes)) {
             4 => IPv4Address::fromBytes($bytes),
             16 => IPv6Address::fromBytes($bytes),
-            default => throw new DomainException('IP address was not recognized'),
+            default => throw new DomainException(sprintf(
+                'IP address was not recognized, %d is not a valid byte length',
+                \strlen($bytes)
+            )),
         };
     }
 
@@ -26,7 +32,10 @@ final readonly class IPAddress
     {
         $bytes = inet_pton($string);
         if ($bytes === false) {
-            throw new DomainException('$string must be a valid IP address');
+            throw new DomainException(sprintf(
+                '$string must be a valid IP address, "%s" given',
+                $string,
+            ));
         }
         return self::fromBytes($bytes);
     }

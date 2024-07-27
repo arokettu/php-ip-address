@@ -8,7 +8,10 @@ use DomainException;
 
 final readonly class IPRange
 {
-    // disable construct
+    /**
+     * Disable constructor
+     * @codeCoverageIgnore
+     */
     private function __construct()
     {
     }
