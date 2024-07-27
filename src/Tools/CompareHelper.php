@@ -32,4 +32,14 @@ final readonly class CompareHelper
     ): int {
         return $left->nonStrictCompare($right);
     }
+
+    public static function sort(array &$array, bool $strict = false): void
+    {
+        usort($array, $strict ? self::strictCompare(...) : self::nonStrictCompare(...));
+    }
+
+    public static function asort(array &$array, bool $strict = false): void
+    {
+        uasort($array, $strict ? self::strictCompare(...) : self::nonStrictCompare(...));
+    }
 }

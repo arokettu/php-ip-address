@@ -38,7 +38,7 @@ final readonly class RangeOptimizer
 
         $bytes = \strlen($ranges[0]->bytes); // guaranteed to be same length
 
-        usort($ranges, CompareHelper::strictCompare(...));
+        CompareHelper::sort($ranges, strict: true);
 
         // absorb smaller ranges
         $prevRange = $ranges[0];

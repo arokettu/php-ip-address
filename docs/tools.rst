@@ -53,3 +53,8 @@ A useful shortcut for sorting::
 
     $ranges = [/* IP ranges */];
     usort($ranges, CompareHelper::nonStrictCompare(...));
+
+* ``Arokettu\IP\Tools\CompareHelper::sort(&$array, $strict = false)``
+* ``Arokettu\IP\Tools\CompareHelper::asort(&$array, $strict = false)``
+
+Uses the helper above to call ``usort`` or ``uasort``
