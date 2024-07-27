@@ -21,7 +21,49 @@ IP address and range classes for PHP.
 
 ## Usage
 
-TODO
+```php
+<?php
+
+use Arokettu\IP\IPAddress;
+use Arokettu\IP\IPRange;
+use Arokettu\IP\IPv4Address;
+use Arokettu\IP\IPv4Range;
+use Arokettu\IP\IPv6Address;
+use Arokettu\IP\IPv6Range;
+use Arokettu\IP\Tools\CompareHelper;
+use Arokettu\IP\Tools\RangeOptimizer;
+
+// IP address
+$ip4 = IPv4Address::fromString('140.82.121.4');
+$ip6 = IPv6Address::fromString('2606:4700:90:0:f22e:fbec:5bed:a9b9');
+
+$ipAuto = IPAddress::fromString('172.65.251.78'); // IPv4Address in this case
+
+// IP Range
+$range4 = IPv4Range::fromString('140.82.112.0/20'); // CIDR string
+$range6 = IPv6Range::fromString('2606:4700::', 32); // Base IP and prefix length
+
+$rangeAuto = IPRange::fromString('fe80::/10'); // IPv6Range in this case
+
+// Containment
+// If range contains IP
+$range4->contains($ip4); // true
+// If range contains other range
+$range6->contains($rangeAuto); // false
+
+// Sort helper
+$ips = [/* IP Addresses */];
+usort($ips, CompareHelper::nonStrictCompare(...)); // allows to mix v4 and v6
+
+// Range collapser
+$ranges = [
+    IPv4Range::fromString('127.0.0.0/24'),
+    IPv4Range::fromString('127.0.0.0/16'),
+    IPv4Range::fromString('192.168.0.0/24'),
+    IPv4Range::fromString('192.168.1.0/24'),
+];
+$optimized = RangeOptimizer::optimizeV4(...$ranges); // [127.0.0.0/16, 192.168.0.0/23]
+```
 
 ## Installation
 
