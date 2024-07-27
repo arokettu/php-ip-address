@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arokettu\IP\Helpers;
 
+use Arokettu\IP\IPv4Address;
+use Arokettu\IP\IPv6Address;
 use DomainException;
 
 trait IPAddressCommonTrait
@@ -29,6 +31,11 @@ trait IPAddressCommonTrait
 
     public function compare(self $address): int
     {
+        return $this->strictCompare($address);
+    }
+
+    public function strictCompare(self $address): int
+    {
         $compare = strcmp($this->bytes, $address->bytes);
         return match (true) {
             $compare < 0 => -1,
@@ -37,8 +44,28 @@ trait IPAddressCommonTrait
         };
     }
 
+    public function nonStrictCompare(IPv4Address|IPv6Address $address): int
+    {
+        return match (true) {
+            $address instanceof self => $this->strictCompare($address),
+            $address instanceof IPv4Address => -1,
+            $address instanceof IPv6Address => 1,
+        };
+    }
+
     public function equals(self $address): bool
     {
+        return $this->strictEquals($address);
+    }
+
+    public function strictEquals(self $address): bool
+    {
+        return $this->bytes === $address->bytes;
+    }
+
+    public function nonStrictEquals(IPv4Address|IPv6Address $address): bool
+    {
+        // just same, but never equals for different types
         return $this->bytes === $address->bytes;
     }
 
