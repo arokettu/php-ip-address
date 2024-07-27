@@ -11,6 +11,9 @@ use Arokettu\IP\IPv6Range;
 use DomainException;
 use InvalidArgumentException;
 
+/**
+ * @internal
+ */
 trait IPRangeCommonTrait
 {
     public readonly string $bytes;

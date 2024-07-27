@@ -8,6 +8,9 @@ use Arokettu\IP\IPv4Address;
 use Arokettu\IP\IPv6Address;
 use DomainException;
 
+/**
+ * @internal
+ */
 trait IPAddressCommonTrait
 {
     public readonly string $bytes;
