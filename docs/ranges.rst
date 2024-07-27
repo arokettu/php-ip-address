@@ -89,12 +89,39 @@ Non-strict mode allows non-normalized base addresses, negative prefixes, and pre
 Methods
 =======
 
+Containment
+-----------
+
+Exists in 3 versions:
+
+* ``strictContains($addressOrRange)`` does not allow mixing of IP versions
+* ``nonStrictContains($addressOrRange)`` allows mixing of IP versions, ranges never contain a "wrong" type of address
+* ``contains($addressOrRange, $strict = false)`` calls one of the above depending on $strict
+
+A method to check if an address or a smaller range belongs to the given range::
+
+    <?php
+
+    use Arokettu\IP\IPAddress;
+    use Arokettu\IP\IPRange;
+
+    $range1 = IPRange::fromString('127.0.0.0/8');
+    $range2 = IPRange::fromString('127.0.0.0/16');
+
+    $ip1 = IPAddress::fromString('127.0.0.1');
+    $ip2 = IPAddress::fromString('fc80::abcd');
+
+    $range1->contains($ip1); // true
+    $range1->contains($ip2); // false
+    $range1->contains($ip2, strict: true); // TypeError
+    $range1->contains($range2); // true
+
 Comparison
 ----------
 
 .. note:: See :ref:`compare-helper`
 
-Exists in 3 versions:
+Also exists in 3 versions:
 
 * ``strictCompare($address)`` does not allow mixing of IP versions
 * ``nonStrictCompare($address)`` allows mixing of IP versions, IPv4 ranges are "smaller" than IPv6 versions
