@@ -18,6 +18,8 @@ Documentation
 .. toctree::
    :maxdepth: 2
 
+   addresses
+   ranges
    tools
 
 License
