@@ -23,9 +23,9 @@ Factories
 ``fromBytes()``
 ---------------
 
-* ``Arokettu\IP\IPv4Address::fromBytes()``
-* ``Arokettu\IP\IPv6Address::fromBytes()``
-* ``Arokettu\IP\IPAddress::fromBytes()``
+* ``Arokettu\IP\IPv4Address::fromBytes($bytes)``
+* ``Arokettu\IP\IPv6Address::fromBytes($bytes)``
+* ``Arokettu\IP\IPAddress::fromBytes($bytes)``
 
 Creates an object from a byte representation (such as created by the ``inet_pton()`` function)::
 
@@ -38,9 +38,9 @@ Creates an object from a byte representation (such as created by the ``inet_pton
 ``fromString()``
 ----------------
 
-* ``Arokettu\IP\IPv4Address::fromBytes()``
-* ``Arokettu\IP\IPv6Address::fromBytes()``
-* ``Arokettu\IP\IPAddress::fromBytes()``
+* ``Arokettu\IP\IPv4Address::fromString($string)``
+* ``Arokettu\IP\IPv6Address::fromString($string)``
+* ``Arokettu\IP\IPAddress::fromString($string)``
 
 Creates an object from a string representation (same valid values as for the ``inet_pton()`` function)::
 
@@ -97,7 +97,19 @@ Returns ``boolean``.
     $ip1 = IPAddress::fromString("127.0.0.1");
     $ip2 = IPAddress::fromString("127.0.0.2");
 
-    $ip2->equals($ip1) > 0; // $ip2 == $ip1; false
+    $ip2->equals($ip1); // $ip2 == $ip1; false
+
+``toString()``
+--------------
+Returns the canonical string representation of the IP::
+
+    <?php
+
+    use Arokettu\IP\IPAddress;
+
+    $ip = IPAddress::fromString("127.0.0.1");
+
+    echo $ip->toString(); // 127.0.0.1
 
 ``getBytes()``
 --------------
@@ -111,15 +123,3 @@ Returns the byte representation of the IP::
     $ip = IPAddress::fromString("127.0.0.1");
 
     echo bin2hex($ip->getBytes()); // 7f000001
-
-``toString()``
---------------
-Returns the canonical string representation of the IP::
-
-    <?php
-
-    use Arokettu\IP\IPAddress;
-
-    $ip = IPAddress::fromString("127.0.0.1");
-
-    echo $ip->toString(); // 127.0.0.1
