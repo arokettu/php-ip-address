@@ -2,6 +2,21 @@
     "name": "arokettu/ip-address",
     "type": "library",
     "license": "MIT",
+    "description": "IP address and range classes for PHP",
+    "keywords": ["ip", "ip address", "ip range", "ipv4", "ipv6"],
+    "homepage": "https://sandfox.dev/php/ip-address.html",
+    "authors": [{
+        "name": "Anton Smirnov",
+        "email": "sandfox+composer@sandfox.me",
+        "role": "developer",
+        "homepage": "https://sandfox.me/"
+    }],
+    "support": {
+        "issues": "https://gitlab.com/sandfox/php-ip-address/-/issues",
+        "source": "https://gitlab.com/sandfox/php-ip-address",
+        "docs": "https://arokettu-ip-address.readthedocs.io/",
+        "chat": "https://gitter.im/arokettu/community"
+    },
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
