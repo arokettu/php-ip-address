@@ -106,8 +106,8 @@ trait IPRangeCommonTrait
     {
         return match (true) {
             $address instanceof self => $this->strictCompare($address),
-            $address instanceof IPv4Range => -1,
-            $address instanceof IPv6Range => 1,
+            $address instanceof IPv4Range => 1,
+            $address instanceof IPv6Range => -1,
         };
     }
 
