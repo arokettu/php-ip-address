@@ -129,7 +129,7 @@ Also exists in 3 versions:
 
 Ranges are compared first by base addresses, then by prefix lengths in natural order.
 
-``192.168.0.0/16 < 192.168.0.0/24 < 192.168.1.0/24``
+``127.0.0.0/8 < 192.168.0.0/16 < 192.168.0.0/24 < 192.168.1.0/24 < 255.0.0.0/8``
 
 Returns one of ``[-1, 0, 1]`` like ``strcmp()`` or ``<=>``.
 
