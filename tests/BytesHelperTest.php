@@ -8,7 +8,7 @@ use Arokettu\IP\Helpers\BytesHelper;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-// we can test full possible ranges here so let's do exactly it
+// we can test full possible ranges here so let's do exactly that
 class BytesHelperTest extends TestCase
 {
     #[DataProvider('ipv4Masks')]
@@ -21,6 +21,18 @@ class BytesHelperTest extends TestCase
     public function testIPv4BitPositions(int $bit, string $hex): void
     {
         self::assertEquals($hex, bin2hex(BytesHelper::buildBitAtPosition(4, $bit)));
+    }
+
+    #[DataProvider('ipv6Masks')]
+    public function testIPv6MaskBytes(int $prefix, string $hexmask): void
+    {
+        self::assertEquals($hexmask, bin2hex(BytesHelper::buildMaskBytes(16, $prefix)));
+    }
+
+    #[DataProvider('ipv6Bits')]
+    public function testIPv6BitPositions(int $bit, string $hex): void
+    {
+        self::assertEquals($hex, bin2hex(BytesHelper::buildBitAtPosition(16, $bit)));
     }
 
     public static function ipv4Masks(): array
@@ -50,6 +62,34 @@ class BytesHelperTest extends TestCase
             [21, '00000800'], [22, '00000400'], [23, '00000200'], [24, '00000100'],
             [25, '00000080'], [26, '00000040'], [27, '00000020'], [28, '00000010'],
             [29, '00000008'], [30, '00000004'], [31, '00000002'], [32, '00000001'],
+        ];
+    }
+
+    public static function ipv6Masks(): array
+    {
+        return [
+            [0,   '00000000000000000000000000000000'],
+            [1,   '80000000000000000000000000000000'],
+            [10,  'ffc00000000000000000000000000000'],
+            [27,  'ffffffe0000000000000000000000000'],
+            [60,  'fffffffffffffff00000000000000000'],
+            [90,  'ffffffffffffffffffffffc000000000'],
+            [127, 'fffffffffffffffffffffffffffffffe'],
+            [128, 'ffffffffffffffffffffffffffffffff'],
+        ];
+    }
+
+    public static function ipv6Bits(): array
+    {
+        return [
+            [0,   '00000000000000000000000000000000'],
+            [1,   '80000000000000000000000000000000'],
+            [10,  '00400000000000000000000000000000'],
+            [27,  '00000020000000000000000000000000'],
+            [60,  '00000000000000100000000000000000'],
+            [90,  '00000000000000000000004000000000'],
+            [127, '00000000000000000000000000000002'],
+            [128, '00000000000000000000000000000001'],
         ];
     }
 }
