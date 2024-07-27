@@ -1,6 +1,7 @@
 {
     "name": "arokettu/ip-address",
     "type": "library",
+    "license": "MIT",
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
