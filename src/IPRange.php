@@ -21,7 +21,10 @@ final readonly class IPRange
         return match (\strlen($bytes)) {
             4 => IPv4Range::fromBytes($bytes, $prefix, $strict),
             16 => IPv6Range::fromBytes($bytes, $prefix, $strict),
-            default => throw new DomainException('IP range was not recognized'),
+            default => throw new DomainException(sprintf(
+                'IP range was not recognized, %d is not a valid byte length',
+                \strlen($bytes),
+            )),
         };
     }
 
