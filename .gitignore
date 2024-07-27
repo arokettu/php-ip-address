@@ -1,5 +1,11 @@
+# ide & dev
 /.idea
 /debug
+
+# composer
 /vendor
 /composer.lock
+
+# phpunit
 /.phpunit.result.cache
+/reports

@@ -34,7 +34,7 @@ final class BytesHelper
         return self::$maskBytes[$bytes][$prefix];
     }
 
-    public static function bitAtPosition(int $bytes, int $position): string
+    public static function buildBitAtPosition(int $bytes, int $position): string
     {
         if (!isset(self::$bitAtPosition[$bytes][$position])) {
             $bytes = str_repeat("\0", $bytes);

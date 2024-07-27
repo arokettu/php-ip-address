@@ -68,7 +68,7 @@ final readonly class RangeOptimizer
                 // only networks with the same prefix can be merged
                 $range->prefix !== $prevRange->prefix ||
                 // only the last significant bit of the prefix value can be different
-                ($range->bytes ^ $prevRange->bytes) !== BytesHelper::bitAtPosition($bytes, $range->prefix)
+                ($range->bytes ^ $prevRange->bytes) !== BytesHelper::buildBitAtPosition($bytes, $range->prefix)
             ) {
                 $prevIndex = $index;
                 $prevRange = $range;

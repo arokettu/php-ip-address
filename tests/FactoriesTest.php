@@ -7,7 +7,7 @@ namespace Arokettu\IP\Tests;
 use Arokettu\IP\IPv4Address;
 use PHPUnit\Framework\TestCase;
 
-class IPv4AddressTest extends TestCase
+class FactoriesTest extends TestCase
 {
     public function testCreation(): void
     {
