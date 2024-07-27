@@ -21,6 +21,7 @@
         "php": "^8.2"
     },
     "require-dev": {
+        "phpunit/phpunit": "^10.5.28",
         "psy/psysh": "*",
         "sandfox.dev/code-standard": "^1.2024.07.20",
         "squizlabs/php_codesniffer": "*"
