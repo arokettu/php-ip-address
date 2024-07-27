@@ -21,8 +21,8 @@ final readonly class IPv6Address implements AnyIPAddress
         }
     }
 
-    public function toRange(): IPv6Range
+    public function toRange(int $prefix = -1): IPv6Range
     {
-        return new IPv6Range($this->bytes, 128);
+        return IPv6Range::fromBytes($this->bytes, $prefix);
     }
 }

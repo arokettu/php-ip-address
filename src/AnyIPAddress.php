@@ -19,5 +19,5 @@ interface AnyIPAddress extends Stringable
 {
     public function getBytes(): string;
     public function toString(): string;
-    public function toRange(): IPv4Range|IPv6Range;
+    public function toRange(int $prefix = -1): IPv4Range|IPv6Range;
 }
