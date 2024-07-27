@@ -39,11 +39,7 @@ final readonly class IPv4Range implements AnyIPRange
         $this->maskBytes = $maskBytes;
     }
 
-    public function contains(self|IPv4Address $address): bool
-    {
-        return $this->contains($address);
-    }
-
+    /** @noinspection PhpHierarchyChecksInspection */
     public function strictContains(self|IPv4Address $address): bool
     {
         if ($address instanceof self && $address->prefix < $this->prefix) {

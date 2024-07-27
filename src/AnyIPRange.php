@@ -8,8 +8,12 @@ use Stringable;
 
 /**
  * @template T
- * @method bool equals(self $range)
- * @method bool contains(T|self $address)
+ * @property-read string $bytes
+ * @property-read int $prefix
+ * @method bool equals(IPv4Range|IPv6Range $range, bool $strict = false)
+ * @method bool strictEquals(self $range)
+ * @method bool nonStrictEquals(IPv4Range|IPv6Range $range)
+ * @method bool contains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $address, bool $strict = false)
  * @method bool strictContains(T|self $address)
  * @method bool nonStrictContains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $address)
  * @method T getFirstAddress()

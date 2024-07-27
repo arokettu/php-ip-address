@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Arokettu\IP\Helpers;
 
+use Arokettu\IP\IPv4Address;
+use Arokettu\IP\IPv4Range;
+use Arokettu\IP\IPv6Address;
+use Arokettu\IP\IPv6Range;
 use DomainException;
 use InvalidArgumentException;
 
@@ -12,6 +16,9 @@ trait IPRangeCommonTrait
     public readonly string $bytes;
     public readonly int $prefix;
     public readonly string $maskBytes;
+
+    abstract public function strictContains(self $address): bool;
+    abstract public function nonStrictContains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $address): bool;
 
     public static function fromBytes(string $bytes, int $prefix, bool $strict = false): self
     {
@@ -72,8 +79,24 @@ trait IPRangeCommonTrait
         return self::fromBytes($bytes, $prefix, $strict);
     }
 
-    public function equals(self $range): bool
+    public function contains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $address, bool $strict = false): bool
     {
+        return $strict ? $this->strictContains($address) : $this->nonStrictContains($address);
+    }
+
+    public function equals(IPv4Range|IPv6Range $range, bool $strict = false): bool
+    {
+        return $strict ? $this->strictEquals($range) : $this->nonStrictEquals($range);
+    }
+
+    public function strictEquals(self $range): bool
+    {
+        return $this->prefix === $range->prefix && $this->bytes === $range->bytes;
+    }
+
+    public function nonStrictEquals(IPv4Range|IPv6Range $range): bool
+    {
+        // just same, it will never be equal for different types
         return $this->prefix === $range->prefix && $this->bytes === $range->bytes;
     }
 
