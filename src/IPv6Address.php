@@ -20,4 +20,9 @@ final readonly class IPv6Address implements AnyIPAddress
             throw new DomainException('IPv6 address must be exactly 16 bytes');
         }
     }
+
+    public function toRange(): IPv6Range
+    {
+        return new IPv6Range($this->bytes, 128);
+    }
 }

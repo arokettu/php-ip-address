@@ -20,4 +20,9 @@ final readonly class IPv4Address implements AnyIPAddress
             throw new DomainException('IPv4 address must be exactly 4 bytes');
         }
     }
+
+    public function toRange(): IPv4Range
+    {
+        return new IPv4Range($this->bytes, 32);
+    }
 }
