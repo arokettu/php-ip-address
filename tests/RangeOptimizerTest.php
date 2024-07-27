@@ -128,4 +128,53 @@ class RangeOptimizerTest extends TestCase
 
         self::assertEquals($optimizedExpected, $optimized);
     }
+
+    public function testCodeEdgeCases(): void
+    {
+        $range1 = IPv4Range::fromString('127.0.0.0/8');
+        $range2 = IPv4Range::fromString('127.0.0.0/16');
+        $range3 = IPv4Range::fromString('127.0.5.0/24');
+        $range4 = IPv4Range::fromString('127.1.0.0/16');
+        $range5 = IPv4Range::fromString('127.0.0.0/15');
+
+        // optimize zero
+        self::assertEquals([], RangeOptimizer::optimizeV4());
+
+        // optimize one
+        $one1 = [$range1];
+        self::assertEquals($one1, RangeOptimizer::optimizeV4(...$one1));
+
+        // after the optimization only one is left
+        self::assertEquals($one1, RangeOptimizer::optimizeV4($range1, $range2, $range3));
+
+        // after gluing only one is left
+        $one2 = [$range5];
+        self::assertEquals($one2, RangeOptimizer::optimizeV4($range2, $range3, $range4));
+    }
+
+    public function testMergeDown(): void
+    {
+        $range1 = IPv6Range::fromString('2001:0000::/32', strict: true);
+        $range2 = IPv6Range::fromString('2001:0001::/32', strict: true);
+        $range3 = IPv6Range::fromString('2001:0002::/31', strict: true);
+        $range4 = IPv6Range::fromString('2001:0004::/30', strict: true);
+        $range5 = IPv6Range::fromString('2001:0008::/29', strict: true);
+
+        $result = IPv6Range::fromString('2001:0000::/28', strict: true);
+
+        self::assertEquals([$result], RangeOptimizer::optimizeV6($range1, $range2, $range3, $range4, $range5));
+    }
+
+    public function testMergeUp(): void
+    {
+        $range1 = IPv6Range::fromString('2001:0000::/29', strict: true);
+        $range2 = IPv6Range::fromString('2001:0008::/30', strict: true);
+        $range3 = IPv6Range::fromString('2001:000c::/31', strict: true);
+        $range4 = IPv6Range::fromString('2001:000e::/32', strict: true);
+        $range5 = IPv6Range::fromString('2001:000f::/32', strict: true);
+
+        $result = IPv6Range::fromString('2001:0000::/28', strict: true);
+
+        self::assertEquals([$result], RangeOptimizer::optimizeV6($range1, $range2, $range3, $range4, $range5));
+    }
 }
