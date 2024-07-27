@@ -142,6 +142,11 @@ trait IPRangeCommonTrait
         return $this->maskBytes;
     }
 
+    public function getMaskString(): string
+    {
+        return inet_ntop($this->maskBytes);
+    }
+
     public function toString(): string
     {
         return sprintf("%s/%d", inet_ntop($this->bytes), $this->prefix);

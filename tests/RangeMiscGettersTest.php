@@ -29,10 +29,12 @@ class RangeMiscGettersTest extends TestCase
 
         self::assertEquals('9df00000', bin2hex($range4->getBytes()));
         self::assertEquals('ffff0000', bin2hex($range4->getMaskBytes()));
+        self::assertEquals('255.255.0.0', $range4->getMaskString());
         self::assertEquals(16, $range4->getPrefix());
 
         self::assertEquals('2a032880000000000000000000000000', bin2hex($range6->getBytes()));
         self::assertEquals('fffffff8000000000000000000000000', bin2hex($range6->getMaskBytes()));
+        self::assertEquals('ffff:fff8::', $range6->getMaskString());
         self::assertEquals(29, $range6->getPrefix());
     }
 }
