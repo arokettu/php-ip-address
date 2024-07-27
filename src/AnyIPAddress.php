@@ -8,12 +8,12 @@ use Stringable;
 
 /**
  * @property-read string $bytes
- * @method int compare(self $address)
+ * @method int compare(IPv4Address|IPv6Address $address, bool $strict = false)
  * @method int strictCompare(self $address)
- * @method int nonStrictCompare(self $address)
- * @method bool equals(self $address)
+ * @method int nonStrictCompare(IPv4Address|IPv6Address $address)
+ * @method bool equals(IPv4Address|IPv6Address $address, bool $strict = false)
  * @method bool strictEquals(self $address)
- * @method bool nonStrictEquals(self $address)
+ * @method bool nonStrictEquals(IPv4Address|IPv6Address $address)
  */
 interface AnyIPAddress extends Stringable
 {

@@ -29,9 +29,9 @@ trait IPAddressCommonTrait
         return self::fromBytes($bytes);
     }
 
-    public function compare(self $address): int
+    public function compare(IPv4Address|IPv6Address $address, bool $strict = false): int
     {
-        return $this->strictCompare($address);
+        return $strict ? $this->strictCompare($address) : $this->nonStrictCompare($address);
     }
 
     public function strictCompare(self $address): int
@@ -53,9 +53,9 @@ trait IPAddressCommonTrait
         };
     }
 
-    public function equals(self $address): bool
+    public function equals(IPv4Address|IPv6Address $address, bool $strict = false): bool
     {
-        return $this->strictEquals($address);
+        return $strict ? $this->strictEquals($address) : $this->nonStrictEquals($address);
     }
 
     public function strictEquals(self $address): bool
@@ -65,7 +65,7 @@ trait IPAddressCommonTrait
 
     public function nonStrictEquals(IPv4Address|IPv6Address $address): bool
     {
-        // just same, but never equals for different types
+        // just same, it will never be equal for different types
         return $this->bytes === $address->bytes;
     }
 
