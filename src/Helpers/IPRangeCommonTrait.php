@@ -84,6 +84,30 @@ trait IPRangeCommonTrait
         return $strict ? $this->strictContains($address) : $this->nonStrictContains($address);
     }
 
+    public function compare(IPv4Range|IPv6Range $range, bool $strict = false): int
+    {
+        return $strict ? $this->strictCompare($range) : $this->nonStrictCompare($range);
+    }
+
+    public function strictCompare(self $address): int
+    {
+        $compare = strcmp($this->bytes, $address->bytes) ?: $this->prefix <=> $address->prefix;
+        return match (true) {
+            $compare < 0 => -1,
+            $compare > 0 => 1,
+            default => 0,
+        };
+    }
+
+    public function nonStrictCompare(IPv4Range|IPv6Range $address): int
+    {
+        return match (true) {
+            $address instanceof self => $this->strictCompare($address),
+            $address instanceof IPv4Range => -1,
+            $address instanceof IPv6Range => 1,
+        };
+    }
+
     public function equals(IPv4Range|IPv6Range $range, bool $strict = false): bool
     {
         return $strict ? $this->strictEquals($range) : $this->nonStrictEquals($range);
