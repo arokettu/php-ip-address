@@ -38,7 +38,7 @@ final readonly class RangeOptimizer
 
         $bytes = \strlen($ranges[0]->bytes); // guaranteed to be same length
 
-        usort($ranges, fn ($a, $b) => strcmp($a->bytes, $b->bytes) ?: $a->prefix <=> $b->prefix);
+        usort($ranges, CompareHelper::strictCompare(...));
 
         // absorb smaller ranges
         $prevRange = $ranges[0];
