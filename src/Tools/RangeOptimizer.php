@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Arokettu\IP\Tools;
 
+use Arokettu\IP\Helpers\BytesHelper;
 use Arokettu\IP\IPv4Range;
 use Arokettu\IP\IPv6Range;
-use SplDoublyLinkedList;
 
 final readonly class RangeOptimizer
 {
@@ -28,43 +28,71 @@ final readonly class RangeOptimizer
 
     private static function optimize(array $ranges): array
     {
+        /** @var list<IPv4Range>|list<IPv6Range> $ranges */
+
+        $count = \count($ranges);
+        if ($count < 2) {
+            // none or single range does not need optimization
+            return $ranges;
+        }
+
+        $bytes = \strlen($ranges[0]->bytes); // guaranteed to be same length
+
         usort($ranges, fn ($a, $b) => strcmp($a->bytes, $b->bytes) ?: $a->prefix <=> $b->prefix);
 
-        /** @var SplDoublyLinkedList<IPv4Range> $list */
-        $list = new SplDoublyLinkedList();
-
-        foreach ($ranges as $range) {
-            $list->push($range);
+        // absorb smaller ranges
+        $prevRange = $ranges[0];
+        for ($index = 1; $index < $count; $index++) {
+            $range = $ranges[$index];
+            if ($prevRange->contains($range)) {
+                unset($ranges[$index]);
+            } else {
+                $prevRange = $range;
+            }
         }
 
-        $list->rewind();
+        $ranges = array_values($ranges);
 
-        while ($list->valid()) {
-            /** @var IPv4Range $range */
-            /** @var IPv4Range $nextRange */
-            $range = $list->current();
+        $count = \count($ranges);
+        if ($count < 2) {
+            // none or single range does not need optimization
+            return $ranges;
+        }
+        $prevRange = $ranges[0];
+        $prevIndex = 0;
+        $index = 1;
+        do {
+            $range = $ranges[$index];
 
-            $list->next();
-            if (!$list->valid()) {
-                break;
-            }
-
-            do {
-                $nextRange = $list->current();
-                $contains = $range->contains($nextRange);
-                $key = $list->key();
-                if ($contains) {
-                    $list->prev();
-                    unset($list[$key]);
-                }
-                $list->next();
-            } while ($contains && $list->valid());
-
-            if ($range->prefix !== $nextRange->prefix) {
+            if (
+                // only networks with the same prefix can be merged
+                $range->prefix !== $prevRange->prefix ||
+                // only the last significant bit of the prefix value can be different
+                ($range->bytes ^ $prevRange->bytes) !== BytesHelper::bitAtPosition($bytes, $range->prefix)
+            ) {
+                $prevIndex = $index;
+                $prevRange = $range;
+                $index += 1;
                 continue;
             }
-        }
 
-        return [...$list];
+            // merge
+            $newRange = new ($range::class)($prevRange->bytes, $prevRange->prefix - 1);
+            $ranges[$prevIndex] = $newRange;
+            unset($ranges[$index]);
+
+            // reset the loop
+            $ranges = array_values($ranges);
+            $prevIndex = max($prevIndex - 1, 0);
+            $prevRange = $ranges[$prevIndex];
+            $index = $prevIndex + 1;
+            $count -= 1;
+            if ($count < 2) {
+                // none or single range does not need optimization
+                return $ranges;
+            }
+        } while ($index < $count);
+
+        return $ranges;
     }
 }
