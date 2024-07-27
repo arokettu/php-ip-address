@@ -44,7 +44,7 @@ final readonly class RangeOptimizer
         $prevRange = $ranges[0];
         for ($index = 1; $index < $count; $index++) {
             $range = $ranges[$index];
-            if ($prevRange->contains($range)) {
+            if ($prevRange->strictContains($range)) {
                 unset($ranges[$index]);
             } else {
                 $prevRange = $range;

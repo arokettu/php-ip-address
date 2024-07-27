@@ -41,12 +41,26 @@ final readonly class IPv4Range implements AnyIPRange
 
     public function contains(self|IPv4Address $address): bool
     {
+        return $this->contains($address);
+    }
+
+    public function strictContains(self|IPv4Address $address): bool
+    {
         if ($address instanceof self && $address->prefix < $this->prefix) {
             // it's a wider range, definitely false
             return false;
         }
 
         return ($address->bytes & $this->maskBytes) === $this->bytes;
+    }
+
+    public function nonStrictContains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $address): bool
+    {
+        if ($address instanceof self || $address instanceof IPv4Address) {
+            return $this->strictContains($address);
+        }
+
+        return false;
     }
 
     public function getFirstAddress(): IPv4Address
