@@ -13,9 +13,9 @@ use Stringable;
  * @method bool equals(IPv4Range|IPv6Range $range, bool $strict = false)
  * @method bool strictEquals(self $range)
  * @method bool nonStrictEquals(IPv4Range|IPv6Range $range)
- * @method bool contains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $address, bool $strict = false)
- * @method bool strictContains(T|self $address)
- * @method bool nonStrictContains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $address)
+ * @method bool contains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $addressOrRange, bool $strict = false)
+ * @method bool strictContains(T|self $addressOrRange)
+ * @method bool nonStrictContains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $addressOrRange)
  * @method T getFirstAddress()
  * @method T getLastAddress()
  */

@@ -20,8 +20,8 @@ trait IPRangeCommonTrait
     public readonly int $prefix;
     public readonly string $maskBytes;
 
-    abstract public function strictContains(self $address): bool;
-    abstract public function nonStrictContains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $address): bool;
+    abstract public function strictContains(self $addressOrRange): bool;
+    abstract public function nonStrictContains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $addressOrRange): bool;
 
     public static function fromBytes(string $bytes, int $prefix, bool $strict = false): self
     {
@@ -82,9 +82,9 @@ trait IPRangeCommonTrait
         return self::fromBytes($bytes, $prefix, $strict);
     }
 
-    public function contains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $address, bool $strict = false): bool
+    public function contains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $addressOrRange, bool $strict = false): bool
     {
-        return $strict ? $this->strictContains($address) : $this->nonStrictContains($address);
+        return $strict ? $this->strictContains($addressOrRange) : $this->nonStrictContains($addressOrRange);
     }
 
     public function compare(IPv4Range|IPv6Range $range, bool $strict = false): int

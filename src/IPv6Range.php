@@ -40,20 +40,20 @@ final readonly class IPv6Range implements AnyIPRange
     }
 
     /** @noinspection PhpHierarchyChecksInspection */
-    public function strictContains(self|IPv6Address $address): bool
+    public function strictContains(self|IPv6Address $addressOrRange): bool
     {
-        if ($address instanceof self && $address->prefix < $this->prefix) {
+        if ($addressOrRange instanceof self && $addressOrRange->prefix < $this->prefix) {
             // it's a wider range, definitely false
             return false;
         }
 
-        return ($address->bytes & $this->maskBytes) === $this->bytes;
+        return ($addressOrRange->bytes & $this->maskBytes) === $this->bytes;
     }
 
-    public function nonStrictContains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $address): bool
+    public function nonStrictContains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $addressOrRange): bool
     {
-        if ($address instanceof self || $address instanceof IPv6Address) {
-            return $this->strictContains($address);
+        if ($addressOrRange instanceof self || $addressOrRange instanceof IPv6Address) {
+            return $this->strictContains($addressOrRange);
         }
 
         return false;
