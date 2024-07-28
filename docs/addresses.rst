@@ -15,7 +15,7 @@ There are 4 classes representing addresses:
 ``Arokettu\IP\IPAddress``
     Common factory methods with version autodetection
 ``Arokettu\IP\AnyIPAddress``
-    An interface meaning both ``IPv4Address``` and ``IPv6Address``
+    An interface meaning both ``IPv4Address`` and ``IPv6Address``
 
 Factories
 =========
