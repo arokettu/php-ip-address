@@ -7,7 +7,7 @@ namespace Arokettu\IP\Tests;
 use Arokettu\IP\IPRange;
 use Arokettu\IP\IPv4Range;
 use Arokettu\IP\IPv6Range;
-use InvalidArgumentException;
+use BadMethodCallException;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 
@@ -50,7 +50,7 @@ class RangeFromStringStrictTest extends TestCase
 
     public function testV4DoublePrefix(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('In strict mode prefix cannot appear in both string and $mask param');
 
         IPv4Range::fromString("127.0.0.0/8", 8, true);
@@ -101,7 +101,7 @@ class RangeFromStringStrictTest extends TestCase
 
     public function testV6DoublePrefix(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('In strict mode prefix cannot appear in both string and $mask param');
 
         IPv6Range::fromString("fe80::/10", 10, true);

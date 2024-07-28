@@ -8,7 +8,7 @@ use Arokettu\IP\IPv4Address;
 use Arokettu\IP\IPv4Range;
 use Arokettu\IP\IPv6Address;
 use Arokettu\IP\IPv6Range;
-use InvalidArgumentException;
+use BadMethodCallException;
 use UnexpectedValueException;
 
 /**
@@ -59,7 +59,7 @@ trait IPRangeCommonTrait
     {
         if (str_contains($string, '/')) { // override mask
             if ($strict && $prefix !== null) {
-                throw new InvalidArgumentException(
+                throw new BadMethodCallException(
                     'In strict mode prefix cannot appear in both string and $mask param'
                 );
             }
