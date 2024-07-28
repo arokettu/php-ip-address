@@ -40,11 +40,11 @@ Non-strict mode allows non-normalized base address and negative prefixes
 
     // denormalized base:
     $range = IPRange::fromBytes("\x7f\0\0\1", 8); // 127.0.0.0/8
-    $range = IPRange::fromBytes("\x7f\0\0\1", 8, strict: true); // DomainException
+    $range = IPRange::fromBytes("\x7f\0\0\1", 8, strict: true); // UnexpectedValueException
 
     // negative prefix:
     $range = IPRange::fromBytes("\x7f\0\0\1", -25); // 127.0.0.0/8
-    $range = IPRange::fromBytes("\x7f\0\0\1", -25, strict: true); // DomainException
+    $range = IPRange::fromBytes("\x7f\0\0\1", -25, strict: true); // UnexpectedValueException
     // mostly useful for single IP ranges in autodetect factories:
     $range = IPRange::fromBytes("\x7f\0\0\1", -1); // 127.0.0.1/32
     $range = IPRange::fromBytes("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\1", -1); // ::1/128
@@ -72,19 +72,19 @@ Non-strict mode allows non-normalized base addresses, negative prefixes, and pre
     // String value takes precedence
     $range = IPRange::fromString("127.0.0.0/8", 16); // 127.0.0.0/8
     // Strict mode disallows double prefix
-    $range = IPRange::fromString("127.0.0.0/8", 16, strict: true); // InvalidArgumentException
+    $range = IPRange::fromString("127.0.0.0/8", 16, strict: true); // BadMethodCallException
 
     // Negative prefixes, like in fromBytes
     $range = IPRange::fromString("127.0.0.1", -1); // 127.0.0.1/32
     $range = IPRange::fromString("::1", -1); // ::1/128
     // Strict mode disallows that
-    $range = IPRange::fromString("::1", -1, strict: true); // DomainException
+    $range = IPRange::fromString("::1", -1, strict: true); // UnexpectedValueException
     // Negative prefixes can only be in a separate parameter
-    $range = IPRange::fromString("127.0.0.1/-1"); // DomainException
+    $range = IPRange::fromString("127.0.0.1/-1"); // UnexpectedValueException
 
     // Denormalized base:
     $range = IPRange::fromString("127.0.0.1/8"); // 127.0.0.0/8
-    $range = IPRange::fromString("127.0.0.1/8", strict: true); // DomainException
+    $range = IPRange::fromString("127.0.0.1/8", strict: true); // UnexpectedValueException
 
 Methods
 =======

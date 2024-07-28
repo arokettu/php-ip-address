@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\IP;
 
-use DomainException;
+use UnexpectedValueException;
 
 final readonly class IPv6Address implements AnyIPAddress
 {
@@ -17,7 +17,7 @@ final readonly class IPv6Address implements AnyIPAddress
         public string $bytes
     ) {
         if (\strlen($bytes) !== self::BYTES) {
-            throw new DomainException('IPv6 address must be exactly 16 bytes');
+            throw new UnexpectedValueException('IPv6 address must be exactly 16 bytes');
         }
     }
 

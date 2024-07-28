@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\IP;
 
-use DomainException;
+use UnexpectedValueException;
 
 final readonly class IPRange
 {
@@ -21,7 +21,7 @@ final readonly class IPRange
         return match (\strlen($bytes)) {
             4 => IPv4Range::fromBytes($bytes, $prefix, $strict),
             16 => IPv6Range::fromBytes($bytes, $prefix, $strict),
-            default => throw new DomainException(sprintf(
+            default => throw new UnexpectedValueException(sprintf(
                 'IP range was not recognized, %d is not a valid byte length',
                 \strlen($bytes),
             )),
@@ -35,17 +35,17 @@ final readonly class IPRange
     ): IPv4Range|IPv6Range {
         try {
             return IPv4Range::fromString($string, $prefix, $strict);
-        } catch (DomainException $e4) {
+        } catch (UnexpectedValueException $e4) {
             // ignore
         }
 
         try {
             return IPv6Range::fromString($string, $prefix, $strict);
-        } catch (DomainException $e6) {
+        } catch (UnexpectedValueException $e6) {
             // ignore
         }
 
-        throw new DomainException(sprintf(
+        throw new UnexpectedValueException(sprintf(
             'IP range was not recognized: "%s", "%s"',
             $e4->getMessage(),
             $e6->getMessage(),

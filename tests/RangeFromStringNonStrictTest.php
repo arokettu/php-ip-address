@@ -7,8 +7,8 @@ namespace Arokettu\IP\Tests;
 use Arokettu\IP\IPRange;
 use Arokettu\IP\IPv4Range;
 use Arokettu\IP\IPv6Range;
-use DomainException;
 use PHPUnit\Framework\TestCase;
+use UnexpectedValueException;
 
 class RangeFromStringNonStrictTest extends TestCase
 {
@@ -39,7 +39,7 @@ class RangeFromStringNonStrictTest extends TestCase
 
     public function testV4NegativeInString(): void
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Prefix value "-1" appears to be invalid');
 
         IPv4Range::fromString("127.0.0.1/-1"); // nope
@@ -72,7 +72,7 @@ class RangeFromStringNonStrictTest extends TestCase
 
     public function testV6NegativeInString(): void
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Prefix value "-1" appears to be invalid');
 
         IPv6Range::fromString("fe80::1/-1"); // nope
@@ -91,7 +91,7 @@ class RangeFromStringNonStrictTest extends TestCase
 
     public function testAutoDetectionFailed(): void
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage(
             'IP range was not recognized: ' .
             '"Base address "127.15.365.5" does not appear to be a valid IPv4 address", ' .

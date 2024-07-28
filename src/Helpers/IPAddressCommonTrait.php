@@ -6,7 +6,7 @@ namespace Arokettu\IP\Helpers;
 
 use Arokettu\IP\IPv4Address;
 use Arokettu\IP\IPv6Address;
-use DomainException;
+use UnexpectedValueException;
 
 /**
  * @internal
@@ -24,7 +24,7 @@ trait IPAddressCommonTrait
     {
         $bytes = inet_pton($string);
         if ($bytes === false || \strlen($bytes) !== self::BYTES) {
-            throw new DomainException(sprintf(
+            throw new UnexpectedValueException(sprintf(
                 '$string must be a valid %s address, "%s" given',
                 self::TYPE,
                 $string,

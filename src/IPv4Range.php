@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\IP;
 
-use DomainException;
+use UnexpectedValueException;
 
 /**
  * @template-implements AnyIPRange<IPv4Address>
@@ -24,16 +24,16 @@ final readonly class IPv4Range implements AnyIPRange
         public int $prefix,
     ) {
         if (\strlen($bytes) !== self::BYTES) {
-            throw new DomainException('Base address for the IPv4 range must be exactly 4 bytes');
+            throw new UnexpectedValueException('Base address for the IPv4 range must be exactly 4 bytes');
         }
         if ($prefix < 0 || $prefix > self::BITS) {
-            throw new DomainException('IPv4 prefix must be in range 0-32');
+            throw new UnexpectedValueException('IPv4 prefix must be in range 0-32');
         }
 
         $maskBytes = Helpers\BytesHelper::buildMaskBytes(self::BYTES, $prefix);
 
         if (($maskBytes & $bytes) !== $bytes) {
-            throw new DomainException('IPv4 range is not in a normalized form');
+            throw new UnexpectedValueException('IPv4 range is not in a normalized form');
         }
 
         $this->maskBytes = $maskBytes;

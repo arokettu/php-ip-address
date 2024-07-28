@@ -7,8 +7,8 @@ namespace Arokettu\IP\Tests;
 use Arokettu\IP\IPAddress;
 use Arokettu\IP\IPv4Address;
 use Arokettu\IP\IPv6Address;
-use DomainException;
 use PHPUnit\Framework\TestCase;
+use UnexpectedValueException;
 
 class AddressFactoriesTest extends TestCase
 {
@@ -26,7 +26,7 @@ class AddressFactoriesTest extends TestCase
 
     public function testIPv4WrongLength(): void
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('IPv4 address must be exactly 4 bytes');
 
         new IPv4Address('abcdabcdabcdabcd');
@@ -34,7 +34,7 @@ class AddressFactoriesTest extends TestCase
 
     public function testIPv4WrongLengthFromBytes(): void
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('IPv4 address must be exactly 4 bytes');
 
         IPv4Address::fromBytes('abcdabcdabcdabcd');
@@ -42,7 +42,7 @@ class AddressFactoriesTest extends TestCase
 
     public function testIPv4WrongFormat(): void
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('$string must be a valid IPv4 address, "abcd::abcd" given');
 
         IPv4Address::fromString('abcd::abcd');
@@ -70,7 +70,7 @@ class AddressFactoriesTest extends TestCase
 
     public function testIPv6WrongLength(): void
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('IPv6 address must be exactly 16 bytes');
 
         new IPv6Address('abcd');
@@ -78,7 +78,7 @@ class AddressFactoriesTest extends TestCase
 
     public function testIPv6WrongLengthFromBytes(): void
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('IPv6 address must be exactly 16 bytes');
 
         IPv6Address::fromBytes('abcd');
@@ -86,7 +86,7 @@ class AddressFactoriesTest extends TestCase
 
     public function testIPv6WrongFormat(): void
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('$string must be a valid IPv6 address, "192.168.1.100" given');
 
         IPv6Address::fromString('192.168.1.100');
@@ -113,7 +113,7 @@ class AddressFactoriesTest extends TestCase
 
     public function testAutodetectFailed(): void
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('IP address was not recognized, 8 is not a valid byte length');
 
         IPAddress::fromBytes('abcdabcd');
@@ -121,7 +121,7 @@ class AddressFactoriesTest extends TestCase
 
     public function testAutodetectWrongFormat(): void
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('$string must be a valid IP address, "something that is not an ip" given');
 
         IPAddress::fromString('something that is not an ip');

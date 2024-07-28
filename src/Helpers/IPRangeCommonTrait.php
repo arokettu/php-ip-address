@@ -8,8 +8,8 @@ use Arokettu\IP\IPv4Address;
 use Arokettu\IP\IPv4Range;
 use Arokettu\IP\IPv6Address;
 use Arokettu\IP\IPv6Range;
-use DomainException;
 use InvalidArgumentException;
+use UnexpectedValueException;
 
 /**
  * @internal
@@ -30,7 +30,7 @@ trait IPRangeCommonTrait
         }
 
         if (\strlen($bytes) !== self::BYTES) {
-            throw new DomainException(sprintf(
+            throw new UnexpectedValueException(sprintf(
                 'Base address for the %s range must be exactly %d bytes',
                 self::TYPE,
                 self::BYTES,
@@ -38,7 +38,7 @@ trait IPRangeCommonTrait
         }
         if ($prefix < 0) {
             if ($prefix < -self::BITS) {
-                throw new DomainException(sprintf(
+                throw new UnexpectedValueException(sprintf(
                     'Negative prefix for the %s range must be greater than or equal to -%d',
                     self::TYPE,
                     self::BITS,
@@ -47,7 +47,7 @@ trait IPRangeCommonTrait
             $prefix += self::BITS + 1;
         }
         if ($prefix < 0 || $prefix > self::BITS) {
-            throw new DomainException(sprintf('%s prefix must be in range 0-%d', self::TYPE, self::BITS));
+            throw new UnexpectedValueException(sprintf('%s prefix must be in range 0-%d', self::TYPE, self::BITS));
         }
 
         $maskBytes = BytesHelper::buildMaskBytes(self::BYTES, $prefix);
@@ -66,13 +66,13 @@ trait IPRangeCommonTrait
             [$string, $prefixStr] = explode('/', $string, 2);
             $prefix = \intval($prefixStr); // succeeds but verify later
             if (!is_numeric($prefixStr) || $prefix != $prefixStr || $prefix < 0) { // non-strict here
-                throw new DomainException(sprintf('Prefix value "%s" appears to be invalid', $prefixStr));
+                throw new UnexpectedValueException(sprintf('Prefix value "%s" appears to be invalid', $prefixStr));
             }
         }
 
         $bytes = inet_pton($string);
         if ($bytes === false || \strlen($bytes) !== self::BYTES) {
-            throw new DomainException(sprintf(
+            throw new UnexpectedValueException(sprintf(
                 'Base address "%s" does not appear to be a valid %s address',
                 $string,
                 self::TYPE,
