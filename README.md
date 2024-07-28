@@ -19,6 +19,12 @@
 
 IP address and range classes for PHP.
 
+## Installation
+
+```bash
+composer require arokettu/ip-address
+```
+
 ## Usage
 
 ```php
@@ -63,12 +69,6 @@ $ranges = [
     IPv4Range::fromString('192.168.1.0/24'),
 ];
 $optimized = RangeOptimizer::optimizeV4(...$ranges); // [127.0.0.0/16, 192.168.0.0/23]
-```
-
-## Installation
-
-```bash
-composer require arokettu/ip-address
 ```
 
 ## Documentation
