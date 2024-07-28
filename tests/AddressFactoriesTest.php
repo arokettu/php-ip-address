@@ -7,6 +7,7 @@ namespace Arokettu\IP\Tests;
 use Arokettu\IP\IPAddress;
 use Arokettu\IP\IPv4Address;
 use Arokettu\IP\IPv6Address;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 
@@ -26,7 +27,7 @@ class AddressFactoriesTest extends TestCase
 
     public function testIPv4WrongLength(): void
     {
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(DomainException::class);
         $this->expectExceptionMessage('IPv4 address must be exactly 4 bytes');
 
         new IPv4Address('abcdabcdabcdabcd');
@@ -70,7 +71,7 @@ class AddressFactoriesTest extends TestCase
 
     public function testIPv6WrongLength(): void
     {
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(DomainException::class);
         $this->expectExceptionMessage('IPv6 address must be exactly 16 bytes');
 
         new IPv6Address('abcd');

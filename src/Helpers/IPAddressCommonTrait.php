@@ -6,6 +6,7 @@ namespace Arokettu\IP\Helpers;
 
 use Arokettu\IP\IPv4Address;
 use Arokettu\IP\IPv6Address;
+use DomainException;
 use UnexpectedValueException;
 
 /**
@@ -17,7 +18,11 @@ trait IPAddressCommonTrait
 
     public static function fromBytes(string $bytes): self
     {
-        return new self($bytes);
+        try {
+            return new self($bytes);
+        } catch (DomainException $e) {
+            throw new UnexpectedValueException($e->getMessage(), previous: $e);
+        }
     }
 
     public static function fromString(string $string): self

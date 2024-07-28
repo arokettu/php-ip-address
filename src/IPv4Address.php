@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\IP;
 
-use UnexpectedValueException;
+use DomainException;
 
 final readonly class IPv4Address implements AnyIPAddress
 {
@@ -17,7 +17,7 @@ final readonly class IPv4Address implements AnyIPAddress
         public string $bytes
     ) {
         if (\strlen($bytes) !== self::BYTES) {
-            throw new UnexpectedValueException('IPv4 address must be exactly 4 bytes');
+            throw new DomainException('IPv4 address must be exactly 4 bytes');
         }
     }
 

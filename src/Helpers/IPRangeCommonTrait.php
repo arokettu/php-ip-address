@@ -9,6 +9,7 @@ use Arokettu\IP\IPv4Range;
 use Arokettu\IP\IPv6Address;
 use Arokettu\IP\IPv6Range;
 use BadMethodCallException;
+use DomainException;
 use UnexpectedValueException;
 
 /**
@@ -26,7 +27,11 @@ trait IPRangeCommonTrait
     public static function fromBytes(string $bytes, int $prefix, bool $strict = false): self
     {
         if ($strict) {
-            return new self($bytes, $prefix);
+            try {
+                return new self($bytes, $prefix);
+            } catch (DomainException $e) {
+                throw new UnexpectedValueException($e->getMessage(), previous: $e);
+            }
         }
 
         if (\strlen($bytes) !== self::BYTES) {

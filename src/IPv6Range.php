@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\IP;
 
-use UnexpectedValueException;
+use DomainException;
 
 /**
  * @template-implements AnyIPRange<IPv6Address>
@@ -24,16 +24,16 @@ final readonly class IPv6Range implements AnyIPRange
         public int $prefix,
     ) {
         if (\strlen($bytes) !== self::BYTES) {
-            throw new UnexpectedValueException('Base address for the IPv6 range must be exactly 16 bytes');
+            throw new DomainException('Base address for the IPv6 range must be exactly 16 bytes');
         }
         if ($prefix < 0 || $prefix > self::BITS) {
-            throw new UnexpectedValueException('IPv6 prefix must be in range 0-128');
+            throw new DomainException('IPv6 prefix must be in range 0-128');
         }
 
         $maskBytes = Helpers\BytesHelper::buildMaskBytes(self::BYTES, $prefix);
 
         if (($maskBytes & $bytes) !== $bytes) {
-            throw new UnexpectedValueException('IPv6 range is not in a normalized form');
+            throw new DomainException('IPv6 range is not in a normalized form');
         }
 
         $this->maskBytes = $maskBytes;
