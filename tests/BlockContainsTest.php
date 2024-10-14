@@ -18,46 +18,46 @@ class BlockContainsTest extends TestCase
         $ip1 = IPv4Address::fromString('192.168.1.100');
         $ip2 = IPv4Address::fromString('127.0.0.1');
 
-        $range1 = IPv4Block::fromString('127.0.0.0/8');
-        $range2 = IPv4Block::fromString('192.168.1.0/24');
-        $range3 = IPv4Block::fromString('192.168.0.0/16');
-        $range4 = IPv4Block::fromString('0.0.0.0/0'); // all addresses
+        $block1 = IPv4Block::fromString('127.0.0.0/8');
+        $block2 = IPv4Block::fromString('192.168.1.0/24');
+        $block3 = IPv4Block::fromString('192.168.0.0/16');
+        $block4 = IPv4Block::fromString('0.0.0.0/0'); // all addresses
 
         // ip 1
-        self::assertFalse($range1->contains($ip1));
-        self::assertTrue($range2->contains($ip1));
-        self::assertTrue($range3->contains($ip1));
-        self::assertTrue($range4->contains($ip1));
+        self::assertFalse($block1->contains($ip1));
+        self::assertTrue($block2->contains($ip1));
+        self::assertTrue($block3->contains($ip1));
+        self::assertTrue($block4->contains($ip1));
 
         // ip 2
-        self::assertTrue($range1->contains($ip2));
-        self::assertFalse($range2->contains($ip2));
-        self::assertFalse($range3->contains($ip2));
-        self::assertTrue($range4->contains($ip2));
+        self::assertTrue($block1->contains($ip2));
+        self::assertFalse($block2->contains($ip2));
+        self::assertFalse($block3->contains($ip2));
+        self::assertTrue($block4->contains($ip2));
 
-        // range 1
-        self::assertTrue($range1->contains($range1)); // self
-        self::assertFalse($range2->contains($range1));
-        self::assertFalse($range3->contains($range1));
-        self::assertTrue($range4->contains($range1));
+        // block 1
+        self::assertTrue($block1->contains($block1)); // self
+        self::assertFalse($block2->contains($block1));
+        self::assertFalse($block3->contains($block1));
+        self::assertTrue($block4->contains($block1));
 
-        // range 2
-        self::assertFalse($range1->contains($range2));
-        self::assertTrue($range2->contains($range2)); // self
-        self::assertTrue($range3->contains($range2));
-        self::assertTrue($range4->contains($range2));
+        // block 2
+        self::assertFalse($block1->contains($block2));
+        self::assertTrue($block2->contains($block2)); // self
+        self::assertTrue($block3->contains($block2));
+        self::assertTrue($block4->contains($block2));
 
-        // range 3
-        self::assertFalse($range1->contains($range3));
-        self::assertFalse($range2->contains($range3));
-        self::assertTrue($range3->contains($range3)); // self
-        self::assertTrue($range4->contains($range3));
+        // block 3
+        self::assertFalse($block1->contains($block3));
+        self::assertFalse($block2->contains($block3));
+        self::assertTrue($block3->contains($block3)); // self
+        self::assertTrue($block4->contains($block3));
 
-        // range 4
-        self::assertFalse($range1->contains($range4));
-        self::assertFalse($range2->contains($range4));
-        self::assertFalse($range3->contains($range4));
-        self::assertTrue($range4->contains($range4)); // self
+        // block 4
+        self::assertFalse($block1->contains($block4));
+        self::assertFalse($block2->contains($block4));
+        self::assertFalse($block3->contains($block4));
+        self::assertTrue($block4->contains($block4)); // self
     }
 
     public function testV6(): void
@@ -65,46 +65,46 @@ class BlockContainsTest extends TestCase
         $ip1 = IPv6Address::fromString('2a03:2880:f113:81:face:b00c:0:25de');
         $ip2 = IPv6Address::fromString('2a00:1450:4026:808::200e');
 
-        $range1 = IPv6Block::fromString('2a00:1450:4000::/37');
-        $range2 = IPv6Block::fromString('2a03:2880::/29');
-        $range3 = IPv6Block::fromString('2a03::/16');
-        $range4 = IPv6Block::fromString('::/0'); // all addresses
+        $block1 = IPv6Block::fromString('2a00:1450:4000::/37');
+        $block2 = IPv6Block::fromString('2a03:2880::/29');
+        $block3 = IPv6Block::fromString('2a03::/16');
+        $block4 = IPv6Block::fromString('::/0'); // all addresses
 
         // ip 1
-        self::assertFalse($range1->contains($ip1));
-        self::assertTrue($range2->contains($ip1));
-        self::assertTrue($range3->contains($ip1));
-        self::assertTrue($range4->contains($ip1));
+        self::assertFalse($block1->contains($ip1));
+        self::assertTrue($block2->contains($ip1));
+        self::assertTrue($block3->contains($ip1));
+        self::assertTrue($block4->contains($ip1));
 
         // ip 2
-        self::assertTrue($range1->contains($ip2));
-        self::assertFalse($range2->contains($ip2));
-        self::assertFalse($range3->contains($ip2));
-        self::assertTrue($range4->contains($ip2));
+        self::assertTrue($block1->contains($ip2));
+        self::assertFalse($block2->contains($ip2));
+        self::assertFalse($block3->contains($ip2));
+        self::assertTrue($block4->contains($ip2));
 
-        // range 1
-        self::assertTrue($range1->contains($range1)); // self
-        self::assertFalse($range2->contains($range1));
-        self::assertFalse($range3->contains($range1));
-        self::assertTrue($range4->contains($range1));
+        // block 1
+        self::assertTrue($block1->contains($block1)); // self
+        self::assertFalse($block2->contains($block1));
+        self::assertFalse($block3->contains($block1));
+        self::assertTrue($block4->contains($block1));
 
-        // range 2
-        self::assertFalse($range1->contains($range2));
-        self::assertTrue($range2->contains($range2)); // self
-        self::assertTrue($range3->contains($range2));
-        self::assertTrue($range4->contains($range2));
+        // block 2
+        self::assertFalse($block1->contains($block2));
+        self::assertTrue($block2->contains($block2)); // self
+        self::assertTrue($block3->contains($block2));
+        self::assertTrue($block4->contains($block2));
 
-        // range 3
-        self::assertFalse($range1->contains($range3));
-        self::assertFalse($range2->contains($range3));
-        self::assertTrue($range3->contains($range3)); // self
-        self::assertTrue($range4->contains($range3));
+        // block 3
+        self::assertFalse($block1->contains($block3));
+        self::assertFalse($block2->contains($block3));
+        self::assertTrue($block3->contains($block3)); // self
+        self::assertTrue($block4->contains($block3));
 
-        // range 4
-        self::assertFalse($range1->contains($range4));
-        self::assertFalse($range2->contains($range4));
-        self::assertFalse($range3->contains($range4));
-        self::assertTrue($range4->contains($range4)); // self
+        // block 4
+        self::assertFalse($block1->contains($block4));
+        self::assertFalse($block2->contains($block4));
+        self::assertFalse($block3->contains($block4));
+        self::assertTrue($block4->contains($block4)); // self
     }
 
     public function testNonStrict(): void
@@ -112,53 +112,53 @@ class BlockContainsTest extends TestCase
         $ip4 = IPv4Address::fromString('192.168.1.100');
         $ip6 = IPv6Address::fromString('2a00:1450:4026:808::200e');
 
-        $range4 = IPv4Block::fromString('0.0.0.0/0'); // all addresses
-        $range6 = IPv6Block::fromString('::/0'); // all addresses
+        $block4 = IPv4Block::fromString('0.0.0.0/0'); // all addresses
+        $block6 = IPv6Block::fromString('::/0'); // all addresses
 
-        self::assertFalse($range4->contains($ip6));
-        self::assertFalse($range6->contains($ip4));
+        self::assertFalse($block4->contains($ip6));
+        self::assertFalse($block6->contains($ip4));
 
-        self::assertFalse($range4->contains($range6));
-        self::assertFalse($range6->contains($range4));
+        self::assertFalse($block4->contains($block6));
+        self::assertFalse($block6->contains($block4));
     }
 
     public function testStrictV4Address(): void
     {
-        $range4 = IPv4Block::fromString('0.0.0.0/0');
+        $block4 = IPv4Block::fromString('0.0.0.0/0');
         $ip6 = IPv6Address::fromString('2a00:1450:4026:808::200e');
 
         $this->expectException(TypeError::class);
 
-        $range4->contains($ip6, true);
+        $block4->contains($ip6, true);
     }
 
-    public function testStrictV4Range(): void
+    public function testStrictV4Block(): void
     {
-        $range4 = IPv4Block::fromString('0.0.0.0/0');
-        $range6 = IPv6Block::fromString('::/0');
+        $block4 = IPv4Block::fromString('0.0.0.0/0');
+        $block6 = IPv6Block::fromString('::/0');
 
         $this->expectException(TypeError::class);
 
-        $range4->contains($range6, true);
+        $block4->contains($block6, true);
     }
 
     public function testStrictV6Address(): void
     {
-        $range6 = IPv6Block::fromString('::/0');
+        $block6 = IPv6Block::fromString('::/0');
         $ip4 = IPv4Address::fromString('192.168.1.100');
 
         $this->expectException(TypeError::class);
 
-        $range6->contains($ip4, true);
+        $block6->contains($ip4, true);
     }
 
-    public function testStrictV6Range(): void
+    public function testStrictV6Block(): void
     {
-        $range6 = IPv6Block::fromString('::/0');
-        $range4 = IPv4Block::fromString('0.0.0.0/0');
+        $block6 = IPv6Block::fromString('::/0');
+        $block4 = IPv4Block::fromString('0.0.0.0/0');
 
         $this->expectException(TypeError::class);
 
-        $range6->contains($range4, true);
+        $block6->contains($block4, true);
     }
 }

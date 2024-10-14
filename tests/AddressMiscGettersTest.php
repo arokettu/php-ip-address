@@ -19,7 +19,7 @@ class AddressMiscGettersTest extends TestCase
         self::assertEquals('abcdabcdabcdabcd', $ip6->getBytes());
     }
 
-    public function testSingleIPRange(): void
+    public function testSingleIPBlock(): void
     {
         $ip4 = IPv4Address::fromString('127.0.0.1');
         $ip6 = IPv6Address::fromString('::1');
@@ -28,7 +28,7 @@ class AddressMiscGettersTest extends TestCase
         self::assertEquals('::1/128', (string)$ip6->toBlock());
     }
 
-    public function testLargerRange(): void
+    public function testLargerBlock(): void
     {
         $ip4 = new IPv4Address('abcd');
         $ip6 = new IPv6Address('abcdabcdabcdabcd');

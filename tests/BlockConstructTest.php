@@ -13,14 +13,14 @@ class BlockConstructTest extends TestCase
 {
     public function testV4Construct(): void
     {
-        $range = new IPv4Block("\x7f\0\0\0", 8);
-        self::assertEquals('127.0.0.0/8', $range->toString());
+        $block = new IPv4Block("\x7f\0\0\0", 8);
+        self::assertEquals('127.0.0.0/8', $block->toString());
     }
 
     public function testV4Construct6Bytes(): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('Base address for the IPv4 range must be exactly 4 bytes');
+        $this->expectExceptionMessage('Base address for the IPv4 block must be exactly 4 bytes');
 
         new IPv4Block("abcdef", 8);
     }
@@ -36,21 +36,21 @@ class BlockConstructTest extends TestCase
     public function testV4Normalized(): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('IPv4 range is not in a normalized form');
+        $this->expectExceptionMessage('IPv4 block is not in a normalized form');
 
         new IPv4Block("\x7f\0\0\1", 8);
     }
 
     public function testV6Construct(): void
     {
-        $range = new IPv6Block("\xfe\x80\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 10);
-        self::assertEquals('fe80::/10', $range->toString());
+        $block = new IPv6Block("\xfe\x80\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 10);
+        self::assertEquals('fe80::/10', $block->toString());
     }
 
     public function testV6Construct6Bytes(): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('Base address for the IPv6 range must be exactly 16 bytes');
+        $this->expectExceptionMessage('Base address for the IPv6 block must be exactly 16 bytes');
 
         new IPv6Block("abcdef", 8);
     }
@@ -66,7 +66,7 @@ class BlockConstructTest extends TestCase
     public function testV6Normalized(): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('IPv6 range is not in a normalized form');
+        $this->expectExceptionMessage('IPv6 block is not in a normalized form');
 
         new IPv6Block("\xfe\x80\0\0\0\0\0\0\0\0\0\0\0\0\0\1", 10);
     }

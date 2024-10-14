@@ -13,20 +13,20 @@ class BlockOptimizerTest extends TestCase
 {
     public function testIPv4(): void
     {
-        $ranges = [
+        $blocks = [
             // duplicates
             '1.2.0.0/16',
             '1.2.0.0/16',
             '1.2.0.0/16',
-            // wider range
+            // wider block
             '4.3.2.1/32',
             '4.3.0.0/24',
             '4.3.0.0/16',
             '4.3.0.0/20',
-            // collapsable range
+            // collapsable block
             '23.42.0.0/17',
             '23.42.128.0/17',
-            // cascade collapsable range
+            // cascade collapsable block
             '42.23.192.0/18',
             '42.23.0.0/17',
             '42.23.128.0/18',
@@ -55,15 +55,15 @@ class BlockOptimizerTest extends TestCase
             '92.44.75.68/32',
         ];
 
-        shuffle($ranges);
+        shuffle($blocks);
 
         // prepare data
-        $ranges = array_map(
+        $blocks = array_map(
             fn ($s) => IPv4Block::fromString($s, -1),
-            $ranges,
+            $blocks,
         );
 
-        $optimized = BlockOptimizer::optimizeV4(...$ranges);
+        $optimized = BlockOptimizer::optimizeV4(...$blocks);
 
         $optimized = array_map(fn ($r) => $r->toString(), $optimized);
 
@@ -72,20 +72,20 @@ class BlockOptimizerTest extends TestCase
 
     public function testIPv6(): void
     {
-        $ranges = [
+        $blocks = [
             // duplicates
             '1111:2222::/32',
             '1111:2222::/32',
             '1111:2222::/32',
-            // wider range
+            // wider block
             '4444:3333:2222:1111::/64',
             '4444:3333::/122',
             '4444:3333::/32',
             '4444:3333::/96',
-            // collapsable range
+            // collapsable block
             '2323:4242:0::/33',
             '2323:4242:8000::/33',
-            // cascade collapsable range
+            // cascade collapsable block
             '4242:2323:c000::/34',
             '4242:2323:0::/33',
             '4242:2323:8000::/34',
@@ -114,15 +114,15 @@ class BlockOptimizerTest extends TestCase
             'abcd:4321::abd8/128',
         ];
 
-        shuffle($ranges);
+        shuffle($blocks);
 
         // prepare data
-        $ranges = array_map(
+        $blocks = array_map(
             fn ($s) => IPv6Block::fromString($s, -1),
-            $ranges,
+            $blocks,
         );
 
-        $optimized = BlockOptimizer::optimizeV6(...$ranges);
+        $optimized = BlockOptimizer::optimizeV6(...$blocks);
 
         $optimized = array_map(fn ($r) => $r->toString(), $optimized);
 
@@ -131,50 +131,50 @@ class BlockOptimizerTest extends TestCase
 
     public function testCodeEdgeCases(): void
     {
-        $range1 = IPv4Block::fromString('127.0.0.0/8');
-        $range2 = IPv4Block::fromString('127.0.0.0/16');
-        $range3 = IPv4Block::fromString('127.0.5.0/24');
-        $range4 = IPv4Block::fromString('127.1.0.0/16');
-        $range5 = IPv4Block::fromString('127.0.0.0/15');
+        $block1 = IPv4Block::fromString('127.0.0.0/8');
+        $block2 = IPv4Block::fromString('127.0.0.0/16');
+        $block3 = IPv4Block::fromString('127.0.5.0/24');
+        $block4 = IPv4Block::fromString('127.1.0.0/16');
+        $block5 = IPv4Block::fromString('127.0.0.0/15');
 
         // optimize zero
         self::assertEquals([], BlockOptimizer::optimizeV4());
 
         // optimize one
-        $one1 = [$range1];
+        $one1 = [$block1];
         self::assertEquals($one1, BlockOptimizer::optimizeV4(...$one1));
 
         // after the optimization only one is left
-        self::assertEquals($one1, BlockOptimizer::optimizeV4($range1, $range2, $range3));
+        self::assertEquals($one1, BlockOptimizer::optimizeV4($block1, $block2, $block3));
 
         // after gluing only one is left
-        $one2 = [$range5];
-        self::assertEquals($one2, BlockOptimizer::optimizeV4($range2, $range3, $range4));
+        $one2 = [$block5];
+        self::assertEquals($one2, BlockOptimizer::optimizeV4($block2, $block3, $block4));
     }
 
     public function testMergeDown(): void
     {
-        $range1 = IPv6Block::fromString('2001:0000::/32', strict: true);
-        $range2 = IPv6Block::fromString('2001:0001::/32', strict: true);
-        $range3 = IPv6Block::fromString('2001:0002::/31', strict: true);
-        $range4 = IPv6Block::fromString('2001:0004::/30', strict: true);
-        $range5 = IPv6Block::fromString('2001:0008::/29', strict: true);
+        $block1 = IPv6Block::fromString('2001:0000::/32', strict: true);
+        $block2 = IPv6Block::fromString('2001:0001::/32', strict: true);
+        $block3 = IPv6Block::fromString('2001:0002::/31', strict: true);
+        $block4 = IPv6Block::fromString('2001:0004::/30', strict: true);
+        $block5 = IPv6Block::fromString('2001:0008::/29', strict: true);
 
         $result = IPv6Block::fromString('2001:0000::/28', strict: true);
 
-        self::assertEquals([$result], BlockOptimizer::optimizeV6($range1, $range2, $range3, $range4, $range5));
+        self::assertEquals([$result], BlockOptimizer::optimizeV6($block1, $block2, $block3, $block4, $block5));
     }
 
     public function testMergeUp(): void
     {
-        $range1 = IPv6Block::fromString('2001:0000::/29', strict: true);
-        $range2 = IPv6Block::fromString('2001:0008::/30', strict: true);
-        $range3 = IPv6Block::fromString('2001:000c::/31', strict: true);
-        $range4 = IPv6Block::fromString('2001:000e::/32', strict: true);
-        $range5 = IPv6Block::fromString('2001:000f::/32', strict: true);
+        $block1 = IPv6Block::fromString('2001:0000::/29', strict: true);
+        $block2 = IPv6Block::fromString('2001:0008::/30', strict: true);
+        $block3 = IPv6Block::fromString('2001:000c::/31', strict: true);
+        $block4 = IPv6Block::fromString('2001:000e::/32', strict: true);
+        $block5 = IPv6Block::fromString('2001:000f::/32', strict: true);
 
         $result = IPv6Block::fromString('2001:0000::/28', strict: true);
 
-        self::assertEquals([$result], BlockOptimizer::optimizeV6($range1, $range2, $range3, $range4, $range5));
+        self::assertEquals([$result], BlockOptimizer::optimizeV6($block1, $block2, $block3, $block4, $block5));
     }
 }

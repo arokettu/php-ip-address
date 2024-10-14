@@ -15,13 +15,13 @@ class BlockFromStringStrictTest extends TestCase
 {
     public function testV4FromString(): void
     {
-        $range1 = IPv4Block::fromString("127.0.0.0/8", null, true);
-        self::assertEquals('127.0.0.0/8', $range1->toString());
+        $block1 = IPv4Block::fromString("127.0.0.0/8", null, true);
+        self::assertEquals('127.0.0.0/8', $block1->toString());
 
-        $range2 = IPv4Block::fromString("127.0.0.0", 8, true);
-        self::assertEquals('127.0.0.0/8', $range2->toString());
+        $block2 = IPv4Block::fromString("127.0.0.0", 8, true);
+        self::assertEquals('127.0.0.0/8', $block2->toString());
 
-        self::assertEquals($range1, $range2);
+        self::assertEquals($block1, $block2);
     }
 
     public function testV4InvalidFormat(): void
@@ -43,7 +43,7 @@ class BlockFromStringStrictTest extends TestCase
     public function testV4Normalized(): void
     {
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('IPv4 range is not in a normalized form');
+        $this->expectExceptionMessage('IPv4 block is not in a normalized form');
 
         IPv4Block::fromString("127.0.0.1/8", null, true);
     }
@@ -66,13 +66,13 @@ class BlockFromStringStrictTest extends TestCase
 
     public function testV6FromString(): void
     {
-        $range1 = IPv6Block::fromString("fe80::/10", null, true);
-        self::assertEquals('fe80::/10', $range1->toString());
+        $block1 = IPv6Block::fromString("fe80::/10", null, true);
+        self::assertEquals('fe80::/10', $block1->toString());
 
-        $range2 = IPv6Block::fromString("fe80::", 10, true);
-        self::assertEquals('fe80::/10', $range2->toString());
+        $block2 = IPv6Block::fromString("fe80::", 10, true);
+        self::assertEquals('fe80::/10', $block2->toString());
 
-        self::assertEquals($range1, $range2);
+        self::assertEquals($block1, $block2);
     }
 
     public function testV6InvalidFormat(): void
@@ -94,7 +94,7 @@ class BlockFromStringStrictTest extends TestCase
     public function testV6Normalized(): void
     {
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('IPv6 range is not in a normalized form');
+        $this->expectExceptionMessage('IPv6 block is not in a normalized form');
 
         IPv6Block::fromString("fe80::1/10", null, true);
     }
@@ -117,20 +117,20 @@ class BlockFromStringStrictTest extends TestCase
 
     public function testAutoDetection(): void
     {
-        $range4 = IPBlock::fromString("127.0.0.0/8", strict: true);
-        self::assertInstanceOf(IPv4Block::class, $range4);
-        self::assertEquals('127.0.0.0/8', $range4->toString());
+        $block4 = IPBlock::fromString("127.0.0.0/8", strict: true);
+        self::assertInstanceOf(IPv4Block::class, $block4);
+        self::assertEquals('127.0.0.0/8', $block4->toString());
 
-        $range6 = IPBlock::fromString("fe80::/10", strict: true);
-        self::assertInstanceOf(IPv6Block::class, $range6);
-        self::assertEquals('fe80::/10', $range6->toString());
+        $block6 = IPBlock::fromString("fe80::/10", strict: true);
+        self::assertInstanceOf(IPv6Block::class, $block6);
+        self::assertEquals('fe80::/10', $block6->toString());
     }
 
     public function testAutoDetectionFailed(): void
     {
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage(
-            'IP range was not recognized: ' .
+            'IP block was not recognized: ' .
             '"Base address "127.15.365.5" does not appear to be a valid IPv4 address", ' .
             '"Base address "127.15.365.5" does not appear to be a valid IPv6 address"'
         );

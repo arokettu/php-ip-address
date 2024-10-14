@@ -15,26 +15,26 @@ class BlockFromStringNonStrictTest extends TestCase
     public function testV4NonStrict(): void
     {
         // normal creation
-        $range1 = IPv4Block::fromString("127.0.0.0/8");
-        self::assertEquals('127.0.0.0/8', $range1->toString());
+        $block1 = IPv4Block::fromString("127.0.0.0/8");
+        self::assertEquals('127.0.0.0/8', $block1->toString());
 
-        $range2 = IPv4Block::fromString("127.0.0.0", 8);
-        self::assertEquals('127.0.0.0/8', $range2->toString());
+        $block2 = IPv4Block::fromString("127.0.0.0", 8);
+        self::assertEquals('127.0.0.0/8', $block2->toString());
 
         // prefix present in both fields, int value is ignored
-        $range3 = IPv4Block::fromString("127.0.0.0/8", 16);
-        self::assertEquals('127.0.0.0/8', $range3->toString());
+        $block3 = IPv4Block::fromString("127.0.0.0/8", 16);
+        self::assertEquals('127.0.0.0/8', $block3->toString());
 
         // negative prefix
-        $range4 = IPv4Block::fromString("127.0.0.0", -25);
-        self::assertEquals('127.0.0.0/8', $range4->toString());
-        // mostly useful for single ip ranges
-        $range5 = IPv4Block::fromString("127.0.0.1", -1);
-        self::assertEquals('127.0.0.1/32', $range5->toString());
+        $block4 = IPv4Block::fromString("127.0.0.0", -25);
+        self::assertEquals('127.0.0.0/8', $block4->toString());
+        // mostly useful for single ip blocks
+        $block5 = IPv4Block::fromString("127.0.0.1", -1);
+        self::assertEquals('127.0.0.1/32', $block5->toString());
 
         // auto normalization
-        $range6 = IPv4Block::fromString("127.0.0.1/8");
-        self::assertEquals('127.0.0.0/8', $range6->toString());
+        $block6 = IPv4Block::fromString("127.0.0.1/8");
+        self::assertEquals('127.0.0.0/8', $block6->toString());
     }
 
     public function testV4NegativeInString(): void
@@ -48,26 +48,26 @@ class BlockFromStringNonStrictTest extends TestCase
     public function testV6NonStrict(): void
     {
         // normal creation
-        $range1 = IPv6Block::fromString("fe80::/10");
-        self::assertEquals('fe80::/10', $range1->toString());
+        $block1 = IPv6Block::fromString("fe80::/10");
+        self::assertEquals('fe80::/10', $block1->toString());
 
-        $range2 = IPv6Block::fromString("fe80::", 10);
-        self::assertEquals('fe80::/10', $range2->toString());
+        $block2 = IPv6Block::fromString("fe80::", 10);
+        self::assertEquals('fe80::/10', $block2->toString());
 
         // prefix present in both fields, int value is ignored
-        $range3 = IPv6Block::fromString("fe80::/10", 16);
-        self::assertEquals('fe80::/10', $range3->toString());
+        $block3 = IPv6Block::fromString("fe80::/10", 16);
+        self::assertEquals('fe80::/10', $block3->toString());
 
         // negative prefix
-        $range6 = IPv6Block::fromString("fe80::", -119);
-        self::assertEquals('fe80::/10', $range6->toString());
-        // mostly useful for single ip ranges
-        $range5 = IPv6Block::fromString("fe80::1", -1);
-        self::assertEquals('fe80::1/128', $range5->toString());
+        $block6 = IPv6Block::fromString("fe80::", -119);
+        self::assertEquals('fe80::/10', $block6->toString());
+        // mostly useful for single ip blocks
+        $block5 = IPv6Block::fromString("fe80::1", -1);
+        self::assertEquals('fe80::1/128', $block5->toString());
 
         // auto normalization
-        $range6 = IPv6Block::fromString("fe80::1/10");
-        self::assertEquals('fe80::/10', $range6->toString());
+        $block6 = IPv6Block::fromString("fe80::1/10");
+        self::assertEquals('fe80::/10', $block6->toString());
     }
 
     public function testV6NegativeInString(): void
@@ -80,20 +80,20 @@ class BlockFromStringNonStrictTest extends TestCase
 
     public function testAutoDetection(): void
     {
-        $range4 = IPBlock::fromString("127.0.0.0/8");
-        self::assertInstanceOf(IPv4Block::class, $range4);
-        self::assertEquals('127.0.0.0/8', $range4->toString());
+        $block4 = IPBlock::fromString("127.0.0.0/8");
+        self::assertInstanceOf(IPv4Block::class, $block4);
+        self::assertEquals('127.0.0.0/8', $block4->toString());
 
-        $range6 = IPBlock::fromString("fe80::/10");
-        self::assertInstanceOf(IPv6Block::class, $range6);
-        self::assertEquals('fe80::/10', $range6->toString());
+        $block6 = IPBlock::fromString("fe80::/10");
+        self::assertInstanceOf(IPv6Block::class, $block6);
+        self::assertEquals('fe80::/10', $block6->toString());
     }
 
     public function testAutoDetectionFailed(): void
     {
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage(
-            'IP range was not recognized: ' .
+            'IP block was not recognized: ' .
             '"Base address "127.15.365.5" does not appear to be a valid IPv4 address", ' .
             '"Base address "127.15.365.5" does not appear to be a valid IPv6 address"'
         );
