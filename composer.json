@@ -3,7 +3,7 @@
     "type": "library",
     "license": "MIT",
     "description": "IP address and range classes for PHP",
-    "keywords": ["ip", "ip address", "ip range", "ipv4", "ipv6"],
+    "keywords": ["ip", "ip address", "ip block", "ip range", "ipv4", "ipv6"],
     "homepage": "https://sandfox.dev/php/ip-address.html",
     "authors": [{
         "name": "Anton Smirnov",

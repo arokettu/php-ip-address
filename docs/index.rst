@@ -3,7 +3,7 @@ IP Address
 
 |Packagist| |GitLab| |GitHub| |Bitbucket| |Gitea|
 
-IP address and range classes for PHP.
+IP address and block classes for PHP.
 
 Installation
 ============

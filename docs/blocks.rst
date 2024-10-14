@@ -1,4 +1,4 @@
-Ranges
+Blocks
 ######
 
 .. highlight:: php
@@ -6,16 +6,16 @@ Ranges
 Classes
 =======
 
-There are 4 classes representing ranges:
+There are 4 classes representing blocks:
 
-``Arokettu\IP\IPv4Range``
-    IPv4 range
-``Arokettu\IP\IPv6Range``
-    IPv6 range
-``Arokettu\IP\IPRange``
+``Arokettu\IP\IPv4Block``
+    IPv4 block
+``Arokettu\IP\IPv6Block``
+    IPv6 block
+``Arokettu\IP\IPBlock``
     Common factory methods with version autodetection
-``Arokettu\IP\AnyIPRange``
-    An interface meaning both ``IPv4Range`` and ``IPv6Range``
+``Arokettu\IP\AnyIPBlock``
+    An interface meaning both ``IPv4Block`` and ``IPv6Block``
 
 Factories
 =========
@@ -23,9 +23,9 @@ Factories
 ``fromBytes()``
 ---------------
 
-* ``Arokettu\IP\IPv4Range::fromBytes($bytes, $prefix, $strict = false)``
-* ``Arokettu\IP\IPv6Range::fromBytes($bytes, $prefix, $strict = false)``
-* ``Arokettu\IP\IPRange::fromBytes($bytes, $prefix, $strict = false)``
+* ``Arokettu\IP\IPv4Block::fromBytes($bytes, $prefix, $strict = false)``
+* ``Arokettu\IP\IPv6Block::fromBytes($bytes, $prefix, $strict = false)``
+* ``Arokettu\IP\IPBlock::fromBytes($bytes, $prefix, $strict = false)``
 
 Creates an object from a byte representation of the base address (such as created by the ``inet_pton()`` function)
 and a prefix value.
@@ -34,27 +34,27 @@ Non-strict mode allows non-normalized base address and negative prefixes
 
     <?php
 
-    use Arokettu\IP\IPRange;
+    use Arokettu\IP\IPBlock;
 
-    $range = IPRange::fromBytes("\x7f\0\0\0", 8); // 127.0.0.0/8
+    $block = IPBlock::fromBytes("\x7f\0\0\0", 8); // 127.0.0.0/8
 
     // denormalized base:
-    $range = IPRange::fromBytes("\x7f\0\0\1", 8); // 127.0.0.0/8
-    $range = IPRange::fromBytes("\x7f\0\0\1", 8, strict: true); // UnexpectedValueException
+    $block = IPBlock::fromBytes("\x7f\0\0\1", 8); // 127.0.0.0/8
+    $block = IPBlock::fromBytes("\x7f\0\0\1", 8, strict: true); // UnexpectedValueException
 
     // negative prefix:
-    $range = IPRange::fromBytes("\x7f\0\0\1", -25); // 127.0.0.0/8
-    $range = IPRange::fromBytes("\x7f\0\0\1", -25, strict: true); // UnexpectedValueException
-    // mostly useful for single IP ranges in autodetect factories:
-    $range = IPRange::fromBytes("\x7f\0\0\1", -1); // 127.0.0.1/32
-    $range = IPRange::fromBytes("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\1", -1); // ::1/128
+    $block = IPBlock::fromBytes("\x7f\0\0\1", -25); // 127.0.0.0/8
+    $block = IPBlock::fromBytes("\x7f\0\0\1", -25, strict: true); // UnexpectedValueException
+    // mostly useful for single IP blocks in autodetect factories:
+    $block = IPBlock::fromBytes("\x7f\0\0\1", -1); // 127.0.0.1/32
+    $block = IPBlock::fromBytes("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\1", -1); // ::1/128
 
 ``fromString()``
 ----------------
 
-* ``Arokettu\IP\IPv4Range::fromString($string, $prefix, $strict = false)``
-* ``Arokettu\IP\IPv6Range::fromString($string, $prefix, $strict = false)``
-* ``Arokettu\IP\IPRange::fromString($string, $prefix, $strict = false)``
+* ``Arokettu\IP\IPv4Block::fromString($string, $prefix, $strict = false)``
+* ``Arokettu\IP\IPv6Block::fromString($string, $prefix, $strict = false)``
+* ``Arokettu\IP\IPBlock::fromString($string, $prefix, $strict = false)``
 
 Creates an object from a string representation of the base address (same valid values as for the ``inet_pton()`` function)
 and a prefix value.
@@ -63,28 +63,28 @@ Non-strict mode allows non-normalized base addresses, negative prefixes, and pre
 
     <?php
 
-    use Arokettu\IP\IPRange;
+    use Arokettu\IP\IPBlock;
 
     // CIDR notation
-    $range = IPRange::fromString("127.0.0.0/8");
+    $block = IPBlock::fromString("127.0.0.0/8");
     // Separate prefix
-    $range = IPRange::fromString("127.0.0.0", 8); // 127.0.0.0/8
+    $block = IPBlock::fromString("127.0.0.0", 8); // 127.0.0.0/8
     // String value takes precedence
-    $range = IPRange::fromString("127.0.0.0/8", 16); // 127.0.0.0/8
+    $block = IPBlock::fromString("127.0.0.0/8", 16); // 127.0.0.0/8
     // Strict mode disallows double prefix
-    $range = IPRange::fromString("127.0.0.0/8", 16, strict: true); // BadMethodCallException
+    $block = IPBlock::fromString("127.0.0.0/8", 16, strict: true); // BadMethodCallException
 
     // Negative prefixes, like in fromBytes
-    $range = IPRange::fromString("127.0.0.1", -1); // 127.0.0.1/32
-    $range = IPRange::fromString("::1", -1); // ::1/128
+    $block = IPBlock::fromString("127.0.0.1", -1); // 127.0.0.1/32
+    $block = IPBlock::fromString("::1", -1); // ::1/128
     // Strict mode disallows that
-    $range = IPRange::fromString("::1", -1, strict: true); // UnexpectedValueException
+    $block = IPBlock::fromString("::1", -1, strict: true); // UnexpectedValueException
     // Negative prefixes can only be in a separate parameter
-    $range = IPRange::fromString("127.0.0.1/-1"); // UnexpectedValueException
+    $block = IPBlock::fromString("127.0.0.1/-1"); // UnexpectedValueException
 
     // Denormalized base:
-    $range = IPRange::fromString("127.0.0.1/8"); // 127.0.0.0/8
-    $range = IPRange::fromString("127.0.0.1/8", strict: true); // UnexpectedValueException
+    $block = IPBlock::fromString("127.0.0.1/8"); // 127.0.0.0/8
+    $block = IPBlock::fromString("127.0.0.1/8", strict: true); // UnexpectedValueException
 
 Methods
 =======
@@ -94,27 +94,27 @@ Containment
 
 Exists in 3 versions:
 
-* ``strictContains($addressOrRange)`` does not allow mixing of IP versions
-* ``nonStrictContains($addressOrRange)`` allows mixing of IP versions, ranges never contain a "wrong" type of address
-* ``contains($addressOrRange, $strict = false)`` calls one of the above depending on $strict
+* ``strictContains($addressOrBlock)`` does not allow mixing of IP versions
+* ``nonStrictContains($addressOrBlock)`` allows mixing of IP versions, blocks never contain a "wrong" type of address
+* ``contains($addressOrBlock, $strict = false)`` calls one of the above depending on $strict
 
-A method to check if an address or a smaller range belongs to the given range::
+A method to check if an address or a smaller block belongs to the given block::
 
     <?php
 
     use Arokettu\IP\IPAddress;
-    use Arokettu\IP\IPRange;
+    use Arokettu\IP\IPBlock;
 
-    $range1 = IPRange::fromString('127.0.0.0/8');
-    $range2 = IPRange::fromString('127.0.0.0/16');
+    $block1 = IPBlock::fromString('127.0.0.0/8');
+    $block2 = IPBlock::fromString('127.0.0.0/16');
 
     $ip1 = IPAddress::fromString('127.0.0.1');
     $ip2 = IPAddress::fromString('fc80::abcd');
 
-    $range1->contains($ip1); // true
-    $range1->contains($ip2); // false
-    $range1->contains($ip2, strict: true); // TypeError
-    $range1->contains($range2); // true
+    $block1->contains($ip1); // true
+    $block1->contains($ip2); // false
+    $block1->contains($ip2, strict: true); // TypeError
+    $block1->contains($block2); // true
 
 Comparison
 ----------
@@ -124,10 +124,10 @@ Comparison
 Also exists in 3 versions:
 
 * ``strictCompare($address)`` does not allow mixing of IP versions
-* ``nonStrictCompare($address)`` allows mixing of IP versions, IPv4 ranges are "smaller" than IPv6 versions
+* ``nonStrictCompare($address)`` allows mixing of IP versions, IPv4 blocks are "smaller" than IPv6 versions
 * ``compare($address, $strict = false)`` calls one of the above depending on $strict
 
-Ranges are compared first by base addresses, then by prefix lengths in natural order.
+Blocks are compared first by base addresses, then by prefix lengths in natural order.
 
 ``127.0.0.0/8 < 192.168.0.0/16 < 192.168.0.0/24 < 192.168.1.0/24 < 255.0.0.0/8``
 
@@ -137,12 +137,12 @@ Returns one of ``[-1, 0, 1]`` like ``strcmp()`` or ``<=>``.
 
     <?php
 
-    use Arokettu\IP\IPRange;
+    use Arokettu\IP\IPBlock;
 
-    $range1 = IPRange::fromString("127.0.0.0/16");
-    $range2 = IPRange::fromString("127.1.0.0/16");
+    $block1 = IPBlock::fromString("127.0.0.0/16");
+    $block2 = IPBlock::fromString("127.1.0.0/16");
 
-    $range2->compare($range1) > 0; // $range2 > $range1; true
+    $block2->compare($block1) > 0; // $block2 > $block1; true
 
 Equality
 --------
@@ -159,24 +159,24 @@ Returns ``boolean``.
 
     <?php
 
-    use Arokettu\IP\IPRange;
+    use Arokettu\IP\IPBlock;
 
-    $range1 = IPRange::fromString("127.0.0.0/16");
-    $range2 = IPRange::fromString("127.1.0.0/16");
+    $block1 = IPBlock::fromString("127.0.0.0/16");
+    $block2 = IPBlock::fromString("127.1.0.0/16");
 
-    $range1->equals($range2); // $range1 == $range2; false
+    $block1->equals($block2); // $block1 == $block2; false
 
 ``toString()``
 --------------
-Returns the canonical string representation of the IP range in CIDR notation::
+Returns the canonical string representation of the IP block in CIDR notation::
 
     <?php
 
-    use Arokettu\IP\IPRange;
+    use Arokettu\IP\IPBlock;
 
-    $range = IPRange::fromString("127.0.0.0/8");
+    $block = IPBlock::fromString("127.0.0.0/8");
 
-    echo $range->toString(); // 127.0.0.0/8
+    echo $block->toString(); // 127.0.0.0/8
 
 Other getters
 -----------------
@@ -190,6 +190,6 @@ Other getters
 ``getMaskString()``
     Mask value in the IP notation
 ``getFirstAddress()``
-    The first IP in the range, also its base address
+    The first IP in the block, also its base address
 ``getLastAddress()``
-    The last IP in the range, the multicast address for the IPv4
+    The last IP in the block, the multicast address for the IPv4
