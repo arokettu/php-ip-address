@@ -22,7 +22,7 @@ final readonly class IPBlock
             4 => IPv4Block::fromBytes($bytes, $prefix, $strict),
             16 => IPv6Block::fromBytes($bytes, $prefix, $strict),
             default => throw new UnexpectedValueException(sprintf(
-                'IP range was not recognized, %d is not a valid byte length',
+                'IP block was not recognized, %d is not a valid byte length',
                 \strlen($bytes),
             )),
         };
@@ -46,7 +46,7 @@ final readonly class IPBlock
         }
 
         throw new UnexpectedValueException(sprintf(
-            'IP range was not recognized: "%s", "%s"',
+            'IP block was not recognized: "%s", "%s"',
             $e4->getMessage(),
             $e6->getMessage(),
         ), previous: $e6);

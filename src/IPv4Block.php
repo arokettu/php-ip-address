@@ -24,7 +24,7 @@ final readonly class IPv4Block implements AnyIPBlock
         public int $prefix,
     ) {
         if (\strlen($bytes) !== self::BYTES) {
-            throw new DomainException('Base address for the IPv4 range must be exactly 4 bytes');
+            throw new DomainException('Base address for the IPv4 block must be exactly 4 bytes');
         }
         if ($prefix < 0 || $prefix > self::BITS) {
             throw new DomainException('IPv4 prefix must be in range 0-32');
@@ -33,27 +33,27 @@ final readonly class IPv4Block implements AnyIPBlock
         $maskBytes = Helpers\BytesHelper::buildMaskBytes(self::BYTES, $prefix);
 
         if (($maskBytes & $bytes) !== $bytes) {
-            throw new DomainException('IPv4 range is not in a normalized form');
+            throw new DomainException('IPv4 block is not in a normalized form');
         }
 
         $this->maskBytes = $maskBytes;
     }
 
     /** @noinspection PhpHierarchyChecksInspection */
-    public function strictContains(self|IPv4Address $addressOrRange): bool
+    public function strictContains(self|IPv4Address $addressOrBlock): bool
     {
-        if ($addressOrRange instanceof self && $addressOrRange->prefix < $this->prefix) {
-            // it's a wider range, definitely false
+        if ($addressOrBlock instanceof self && $addressOrBlock->prefix < $this->prefix) {
+            // it's a wider block, definitely false
             return false;
         }
 
-        return ($addressOrRange->bytes & $this->maskBytes) === $this->bytes;
+        return ($addressOrBlock->bytes & $this->maskBytes) === $this->bytes;
     }
 
-    public function nonStrictContains(IPv4Address|IPv6Address|IPv4Block|IPv6Block $addressOrRange): bool
+    public function nonStrictContains(IPv4Address|IPv6Address|IPv4Block|IPv6Block $addressOrBlock): bool
     {
-        if ($addressOrRange instanceof self || $addressOrRange instanceof IPv4Address) {
-            return $this->strictContains($addressOrRange);
+        if ($addressOrBlock instanceof self || $addressOrBlock instanceof IPv4Address) {
+            return $this->strictContains($addressOrBlock);
         }
 
         return false;

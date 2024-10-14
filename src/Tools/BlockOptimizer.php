@@ -13,86 +13,86 @@ final readonly class BlockOptimizer
     /**
      * @return array<IPv4Block>
      */
-    public static function optimizeV4(IPv4Block ...$ranges): array
+    public static function optimizeV4(IPv4Block ...$blocks): array
     {
-        return self::optimize($ranges);
+        return self::optimize($blocks);
     }
 
     /**
      * @return array<IPv6Block>
      */
-    public static function optimizeV6(IPv6Block ...$ranges): array
+    public static function optimizeV6(IPv6Block ...$blocks): array
     {
-        return self::optimize($ranges);
+        return self::optimize($blocks);
     }
 
-    private static function optimize(array $ranges): array
+    private static function optimize(array $blocks): array
     {
-        /** @var list<IPv4Block>|list<IPv6Block> $ranges */
+        /** @var list<IPv4Block>|list<IPv6Block> $blocks */
 
-        $count = \count($ranges);
+        $count = \count($blocks);
         if ($count < 2) {
-            // none or single range does not need optimization
-            return $ranges;
+            // none or single block does not need optimization
+            return $blocks;
         }
 
-        $bytes = \strlen($ranges[0]->bytes); // guaranteed to be same length
+        $bytes = \strlen($blocks[0]->bytes); // guaranteed to be same length
 
-        CompareHelper::sort($ranges, strict: true);
+        CompareHelper::sort($blocks, strict: true);
 
-        // absorb smaller ranges
-        $prevRange = $ranges[0];
+        // absorb smaller blocks
+        $prevBlock = $blocks[0];
         for ($index = 1; $index < $count; $index++) {
-            $range = $ranges[$index];
-            if ($prevRange->strictContains($range)) {
-                unset($ranges[$index]);
+            $block = $blocks[$index];
+            if ($prevBlock->strictContains($block)) {
+                unset($blocks[$index]);
             } else {
-                $prevRange = $range;
+                $prevBlock = $block;
             }
         }
 
-        $ranges = array_values($ranges);
+        $blocks = array_values($blocks);
 
-        $count = \count($ranges);
+        $count = \count($blocks);
         if ($count < 2) {
-            // none or single range does not need optimization
-            return $ranges;
+            // none or single block does not need optimization
+            return $blocks;
         }
-        $prevRange = $ranges[0];
+        $prevBlock = $blocks[0];
         $prevIndex = 0;
         $index = 1;
         do {
-            $range = $ranges[$index];
+            $block = $blocks[$index];
 
             if (
                 // only networks with the same prefix can be merged
-                $range->prefix !== $prevRange->prefix ||
+                $block->prefix !== $prevBlock->prefix ||
                 // only the last significant bit of the prefix value can be different
-                ($range->bytes ^ $prevRange->bytes) !== BytesHelper::buildBitAtPosition($bytes, $range->prefix)
+                ($block->bytes ^ $prevBlock->bytes) !== BytesHelper::buildBitAtPosition($bytes, $block->prefix)
             ) {
                 $prevIndex = $index;
-                $prevRange = $range;
+                $prevBlock = $block;
                 $index += 1;
                 continue;
             }
 
             // merge
-            $newRange = new ($range::class)($prevRange->bytes, $prevRange->prefix - 1);
-            $ranges[$prevIndex] = $newRange;
-            unset($ranges[$index]);
+            $newBlock = new ($block::class)($prevBlock->bytes, $prevBlock->prefix - 1);
+            $blocks[$prevIndex] = $newBlock;
+            unset($blocks[$index]);
 
             // reset the loop
-            $ranges = array_values($ranges);
+            $blocks = array_values($blocks);
             $prevIndex = max($prevIndex - 1, 0);
-            $prevRange = $ranges[$prevIndex];
+            $prevBlock = $blocks[$prevIndex];
             $index = $prevIndex + 1;
             $count -= 1;
             if ($count < 2) {
-                // none or single range does not need optimization
-                return $ranges;
+                // none or single block does not need optimization
+                return $blocks;
             }
         } while ($index < $count);
 
-        return $ranges;
+        return $blocks;
     }
 }

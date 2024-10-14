@@ -17,7 +17,7 @@
 [Gitlab CI Link]: https://gitlab.com/sandfox/php-ip-address/-/pipelines
 [Codecov Link]: https://codecov.io/gl/sandfox/php-ip-address/
 
-IP address and range classes for PHP.
+IP address and block classes for PHP.
 
 ## Installation
 

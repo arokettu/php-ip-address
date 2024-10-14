@@ -24,8 +24,8 @@ class AddressMiscGettersTest extends TestCase
         $ip4 = IPv4Address::fromString('127.0.0.1');
         $ip6 = IPv6Address::fromString('::1');
 
-        self::assertEquals('127.0.0.1/32', (string)$ip4->toRange());
-        self::assertEquals('::1/128', (string)$ip6->toRange());
+        self::assertEquals('127.0.0.1/32', (string)$ip4->toBlock());
+        self::assertEquals('::1/128', (string)$ip6->toBlock());
     }
 
     public function testLargerRange(): void
@@ -33,7 +33,7 @@ class AddressMiscGettersTest extends TestCase
         $ip4 = new IPv4Address('abcd');
         $ip6 = new IPv6Address('abcdabcdabcdabcd');
 
-        self::assertEquals('97.0.0.0/8', (string)$ip4->toRange(8));
-        self::assertEquals('6162:6364::/32', (string)$ip6->toRange(32));
+        self::assertEquals('97.0.0.0/8', (string)$ip4->toBlock(8));
+        self::assertEquals('6162:6364::/32', (string)$ip6->toBlock(32));
     }
 }

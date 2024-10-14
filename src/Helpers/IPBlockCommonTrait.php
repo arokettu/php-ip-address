@@ -21,8 +21,8 @@ trait IPBlockCommonTrait
     public readonly int $prefix;
     public readonly string $maskBytes;
 
-    abstract public function strictContains(self $addressOrRange): bool;
-    abstract public function nonStrictContains(IPv4Address|IPv6Address|IPv4Block|IPv6Block $addressOrRange): bool;
+    abstract public function strictContains(self $addressOrBlock): bool;
+    abstract public function nonStrictContains(IPv4Address|IPv6Address|IPv4Block|IPv6Block $addressOrBlock): bool;
 
     public static function fromBytes(string $bytes, int $prefix, bool $strict = false): self
     {
@@ -36,7 +36,7 @@ trait IPBlockCommonTrait
 
         if (\strlen($bytes) !== self::BYTES) {
             throw new UnexpectedValueException(sprintf(
-                'Base address for the %s range must be exactly %d bytes',
+                'Base address for the %s block must be exactly %d bytes',
                 self::TYPE,
                 self::BYTES,
             ));
@@ -44,7 +44,7 @@ trait IPBlockCommonTrait
         if ($prefix < 0) {
             if ($prefix < -self::BITS) {
                 throw new UnexpectedValueException(sprintf(
-                    'Negative prefix for the %s range must be greater than or equal to -%d',
+                    'Negative prefix for the %s block must be greater than or equal to -%d',
                     self::TYPE,
                     self::BITS,
                 ));
@@ -87,19 +87,19 @@ trait IPBlockCommonTrait
         return self::fromBytes($bytes, $prefix, $strict);
     }
 
-    public function contains(IPv4Address|IPv6Address|IPv4Block|IPv6Block $addressOrRange, bool $strict = false): bool
+    public function contains(IPv4Address|IPv6Address|IPv4Block|IPv6Block $addressOrBlock, bool $strict = false): bool
     {
-        return $strict ? $this->strictContains($addressOrRange) : $this->nonStrictContains($addressOrRange);
+        return $strict ? $this->strictContains($addressOrBlock) : $this->nonStrictContains($addressOrBlock);
     }
 
-    public function compare(IPv4Block|IPv6Block $range, bool $strict = false): int
+    public function compare(IPv4Block|IPv6Block $block, bool $strict = false): int
     {
-        return $strict ? $this->strictCompare($range) : $this->nonStrictCompare($range);
+        return $strict ? $this->strictCompare($block) : $this->nonStrictCompare($block);
     }
 
-    public function strictCompare(self $address): int
+    public function strictCompare(self $block): int
     {
-        $compare = strcmp($this->bytes, $address->bytes) ?: $this->prefix <=> $address->prefix;
+        $compare = strcmp($this->bytes, $block->bytes) ?: $this->prefix <=> $block->prefix;
         return match (true) {
             $compare < 0 => -1,
             $compare > 0 => 1,
@@ -107,29 +107,29 @@ trait IPBlockCommonTrait
         };
     }
 
-    public function nonStrictCompare(IPv4Block|IPv6Block $address): int
+    public function nonStrictCompare(IPv4Block|IPv6Block $block): int
     {
         return match (true) {
-            $address instanceof self => $this->strictCompare($address),
-            $address instanceof IPv4Block => 1,
-            $address instanceof IPv6Block => -1,
+            $block instanceof self => $this->strictCompare($block),
+            $block instanceof IPv4Block => 1,
+            $block instanceof IPv6Block => -1,
         };
     }
 
-    public function equals(IPv4Block|IPv6Block $range, bool $strict = false): bool
+    public function equals(IPv4Block|IPv6Block $block, bool $strict = false): bool
     {
-        return $strict ? $this->strictEquals($range) : $this->nonStrictEquals($range);
+        return $strict ? $this->strictEquals($block) : $this->nonStrictEquals($block);
     }
 
-    public function strictEquals(self $range): bool
+    public function strictEquals(self $block): bool
     {
-        return $this->prefix === $range->prefix && $this->bytes === $range->bytes;
+        return $this->prefix === $block->prefix && $this->bytes === $block->bytes;
     }
 
-    public function nonStrictEquals(IPv4Block|IPv6Block $range): bool
+    public function nonStrictEquals(IPv4Block|IPv6Block $block): bool
     {
         // just same, it will never be equal for different types
-        return $this->prefix === $range->prefix && $this->bytes === $range->bytes;
+        return $this->prefix === $block->prefix && $this->bytes === $block->bytes;
     }
 
     public function getBytes(): string
