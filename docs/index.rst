@@ -19,7 +19,7 @@ Documentation
    :maxdepth: 2
 
    addresses
-   ranges
+   blocks
    tools
 
 License

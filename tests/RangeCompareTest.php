@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Arokettu\IP\Tests;
 
-use Arokettu\IP\IPv4Range;
-use Arokettu\IP\IPv6Range;
+use Arokettu\IP\IPv4Block;
+use Arokettu\IP\IPv6Block;
 use Arokettu\IP\Tools\CompareHelper;
 use PHPUnit\Framework\TestCase;
 use TypeError;
@@ -14,9 +14,9 @@ class RangeCompareTest extends TestCase
 {
     public function testV4Compare(): void
     {
-        $ip1 = IPv4Range::fromString('104.244.0.0/16');
-        $ip2 = IPv4Range::fromString('157.240.0.0/16');
-        $ip3 = IPv4Range::fromString('157.240.0.0/24');
+        $ip1 = IPv4Block::fromString('104.244.0.0/16');
+        $ip2 = IPv4Block::fromString('157.240.0.0/16');
+        $ip3 = IPv4Block::fromString('157.240.0.0/24');
 
         $sorted = [$ip1, $ip2, $ip3];
         $unsorted = $sorted;
@@ -55,9 +55,9 @@ class RangeCompareTest extends TestCase
 
     public function testV6Compare(): void
     {
-        $ip1 = IPv6Range::fromString('2606:4700::/16');
-        $ip2 = IPv6Range::fromString('2a00:1450::/16');
-        $ip3 = IPv6Range::fromString('2a00:1450::/64');
+        $ip1 = IPv6Block::fromString('2606:4700::/16');
+        $ip2 = IPv6Block::fromString('2a00:1450::/16');
+        $ip3 = IPv6Block::fromString('2a00:1450::/64');
 
         $sorted = [$ip1, $ip2, $ip3];
         $unsorted = $sorted;
@@ -96,12 +96,12 @@ class RangeCompareTest extends TestCase
 
     public function testCrossTypeCompare(): void
     {
-        $ip1 = IPv4Range::fromString('104.244.42.193', -1);
-        $ip2 = IPv6Range::fromString('2606:4700::6810:84e5', -1);
-        $ip3 = IPv4Range::fromString('157.240.205.35', -1);
-        $ip4 = IPv6Range::fromString('2a00:1450:4026:808::200e', -1);
-        $ip5 = IPv6Range::fromString('::104.244.42.193/128');
-        $ip6 = IPv6Range::fromString('68f4:2ac1::/32');
+        $ip1 = IPv4Block::fromString('104.244.42.193', -1);
+        $ip2 = IPv6Block::fromString('2606:4700::6810:84e5', -1);
+        $ip3 = IPv4Block::fromString('157.240.205.35', -1);
+        $ip4 = IPv6Block::fromString('2a00:1450:4026:808::200e', -1);
+        $ip5 = IPv6Block::fromString('::104.244.42.193/128');
+        $ip6 = IPv6Block::fromString('68f4:2ac1::/32');
 
         $sorted = [$ip1, $ip3, $ip5, $ip2, $ip4, $ip6];
         $unsorted = $sorted;
@@ -125,8 +125,8 @@ class RangeCompareTest extends TestCase
 
     public function testStrictCompareV4(): void
     {
-        $ip4 = IPv4Range::fromString('104.244.42.0/24');
-        $ip6 = IPv6Range::fromString('2606:4700::/32');
+        $ip4 = IPv4Block::fromString('104.244.42.0/24');
+        $ip6 = IPv6Block::fromString('2606:4700::/32');
 
         $this->expectException(TypeError::class);
         $ip4->compare($ip6, true);
@@ -134,8 +134,8 @@ class RangeCompareTest extends TestCase
 
     public function testStrictCompareV6(): void
     {
-        $ip4 = IPv4Range::fromString('104.244.42.0/24');
-        $ip6 = IPv6Range::fromString('2606:4700::/32');
+        $ip4 = IPv4Block::fromString('104.244.42.0/24');
+        $ip6 = IPv6Block::fromString('2606:4700::/32');
 
         $this->expectException(TypeError::class);
         $ip6->compare($ip4, true);
@@ -143,8 +143,8 @@ class RangeCompareTest extends TestCase
 
     public function testStrictEqualsV4(): void
     {
-        $ip4 = IPv4Range::fromString('104.244.42.0/24');
-        $ip6 = IPv6Range::fromString('2606:4700::/32');
+        $ip4 = IPv4Block::fromString('104.244.42.0/24');
+        $ip6 = IPv6Block::fromString('2606:4700::/32');
 
         $this->expectException(TypeError::class);
         $ip4->equals($ip6, true);
@@ -152,8 +152,8 @@ class RangeCompareTest extends TestCase
 
     public function testStrictEqualsV6(): void
     {
-        $ip4 = IPv4Range::fromString('104.244.42.0/24');
-        $ip6 = IPv6Range::fromString('2606:4700::/32');
+        $ip4 = IPv4Block::fromString('104.244.42.0/24');
+        $ip6 = IPv6Block::fromString('2606:4700::/32');
 
         $this->expectException(TypeError::class);
         $ip6->equals($ip4, true);

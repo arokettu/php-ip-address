@@ -6,7 +6,7 @@ namespace Arokettu\IP;
 
 use UnexpectedValueException;
 
-final readonly class IPRange
+final readonly class IPBlock
 {
     /**
      * Disable constructor
@@ -16,11 +16,11 @@ final readonly class IPRange
     {
     }
 
-    public static function fromBytes(string $bytes, int $prefix, bool $strict = false): IPv4Range|IPv6Range
+    public static function fromBytes(string $bytes, int $prefix, bool $strict = false): IPv4Block|IPv6Block
     {
         return match (\strlen($bytes)) {
-            4 => IPv4Range::fromBytes($bytes, $prefix, $strict),
-            16 => IPv6Range::fromBytes($bytes, $prefix, $strict),
+            4 => IPv4Block::fromBytes($bytes, $prefix, $strict),
+            16 => IPv6Block::fromBytes($bytes, $prefix, $strict),
             default => throw new UnexpectedValueException(sprintf(
                 'IP range was not recognized, %d is not a valid byte length',
                 \strlen($bytes),
@@ -32,15 +32,15 @@ final readonly class IPRange
         string $string,
         int|null $prefix = null,
         bool $strict = false
-    ): IPv4Range|IPv6Range {
+    ): IPv4Block|IPv6Block {
         try {
-            return IPv4Range::fromString($string, $prefix, $strict);
+            return IPv4Block::fromString($string, $prefix, $strict);
         } catch (UnexpectedValueException $e4) {
             // ignore
         }
 
         try {
-            return IPv6Range::fromString($string, $prefix, $strict);
+            return IPv6Block::fromString($string, $prefix, $strict);
         } catch (UnexpectedValueException $e6) {
             // ignore
         }

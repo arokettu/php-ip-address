@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Arokettu\IP\Helpers;
 
 use Arokettu\IP\IPv4Address;
-use Arokettu\IP\IPv4Range;
+use Arokettu\IP\IPv4Block;
 use Arokettu\IP\IPv6Address;
-use Arokettu\IP\IPv6Range;
+use Arokettu\IP\IPv6Block;
 use BadMethodCallException;
 use DomainException;
 use UnexpectedValueException;
@@ -15,14 +15,14 @@ use UnexpectedValueException;
 /**
  * @internal
  */
-trait IPRangeCommonTrait
+trait IPBlockCommonTrait
 {
     public readonly string $bytes;
     public readonly int $prefix;
     public readonly string $maskBytes;
 
     abstract public function strictContains(self $addressOrRange): bool;
-    abstract public function nonStrictContains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $addressOrRange): bool;
+    abstract public function nonStrictContains(IPv4Address|IPv6Address|IPv4Block|IPv6Block $addressOrRange): bool;
 
     public static function fromBytes(string $bytes, int $prefix, bool $strict = false): self
     {
@@ -87,12 +87,12 @@ trait IPRangeCommonTrait
         return self::fromBytes($bytes, $prefix, $strict);
     }
 
-    public function contains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $addressOrRange, bool $strict = false): bool
+    public function contains(IPv4Address|IPv6Address|IPv4Block|IPv6Block $addressOrRange, bool $strict = false): bool
     {
         return $strict ? $this->strictContains($addressOrRange) : $this->nonStrictContains($addressOrRange);
     }
 
-    public function compare(IPv4Range|IPv6Range $range, bool $strict = false): int
+    public function compare(IPv4Block|IPv6Block $range, bool $strict = false): int
     {
         return $strict ? $this->strictCompare($range) : $this->nonStrictCompare($range);
     }
@@ -107,16 +107,16 @@ trait IPRangeCommonTrait
         };
     }
 
-    public function nonStrictCompare(IPv4Range|IPv6Range $address): int
+    public function nonStrictCompare(IPv4Block|IPv6Block $address): int
     {
         return match (true) {
             $address instanceof self => $this->strictCompare($address),
-            $address instanceof IPv4Range => 1,
-            $address instanceof IPv6Range => -1,
+            $address instanceof IPv4Block => 1,
+            $address instanceof IPv6Block => -1,
         };
     }
 
-    public function equals(IPv4Range|IPv6Range $range, bool $strict = false): bool
+    public function equals(IPv4Block|IPv6Block $range, bool $strict = false): bool
     {
         return $strict ? $this->strictEquals($range) : $this->nonStrictEquals($range);
     }
@@ -126,7 +126,7 @@ trait IPRangeCommonTrait
         return $this->prefix === $range->prefix && $this->bytes === $range->bytes;
     }
 
-    public function nonStrictEquals(IPv4Range|IPv6Range $range): bool
+    public function nonStrictEquals(IPv4Block|IPv6Block $range): bool
     {
         // just same, it will never be equal for different types
         return $this->prefix === $range->prefix && $this->bytes === $range->bytes;

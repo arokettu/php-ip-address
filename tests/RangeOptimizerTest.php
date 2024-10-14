@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Arokettu\IP\Tests;
 
-use Arokettu\IP\IPv4Range;
-use Arokettu\IP\IPv6Range;
-use Arokettu\IP\Tools\RangeOptimizer;
+use Arokettu\IP\IPv4Block;
+use Arokettu\IP\IPv6Block;
+use Arokettu\IP\Tools\BlockOptimizer;
 use PHPUnit\Framework\TestCase;
 
 class RangeOptimizerTest extends TestCase
@@ -59,11 +59,11 @@ class RangeOptimizerTest extends TestCase
 
         // prepare data
         $ranges = array_map(
-            fn ($s) => IPv4Range::fromString($s, -1),
+            fn ($s) => IPv4Block::fromString($s, -1),
             $ranges,
         );
 
-        $optimized = RangeOptimizer::optimizeV4(...$ranges);
+        $optimized = BlockOptimizer::optimizeV4(...$ranges);
 
         $optimized = array_map(fn ($r) => $r->toString(), $optimized);
 
@@ -118,11 +118,11 @@ class RangeOptimizerTest extends TestCase
 
         // prepare data
         $ranges = array_map(
-            fn ($s) => IPv6Range::fromString($s, -1),
+            fn ($s) => IPv6Block::fromString($s, -1),
             $ranges,
         );
 
-        $optimized = RangeOptimizer::optimizeV6(...$ranges);
+        $optimized = BlockOptimizer::optimizeV6(...$ranges);
 
         $optimized = array_map(fn ($r) => $r->toString(), $optimized);
 
@@ -131,50 +131,50 @@ class RangeOptimizerTest extends TestCase
 
     public function testCodeEdgeCases(): void
     {
-        $range1 = IPv4Range::fromString('127.0.0.0/8');
-        $range2 = IPv4Range::fromString('127.0.0.0/16');
-        $range3 = IPv4Range::fromString('127.0.5.0/24');
-        $range4 = IPv4Range::fromString('127.1.0.0/16');
-        $range5 = IPv4Range::fromString('127.0.0.0/15');
+        $range1 = IPv4Block::fromString('127.0.0.0/8');
+        $range2 = IPv4Block::fromString('127.0.0.0/16');
+        $range3 = IPv4Block::fromString('127.0.5.0/24');
+        $range4 = IPv4Block::fromString('127.1.0.0/16');
+        $range5 = IPv4Block::fromString('127.0.0.0/15');
 
         // optimize zero
-        self::assertEquals([], RangeOptimizer::optimizeV4());
+        self::assertEquals([], BlockOptimizer::optimizeV4());
 
         // optimize one
         $one1 = [$range1];
-        self::assertEquals($one1, RangeOptimizer::optimizeV4(...$one1));
+        self::assertEquals($one1, BlockOptimizer::optimizeV4(...$one1));
 
         // after the optimization only one is left
-        self::assertEquals($one1, RangeOptimizer::optimizeV4($range1, $range2, $range3));
+        self::assertEquals($one1, BlockOptimizer::optimizeV4($range1, $range2, $range3));
 
         // after gluing only one is left
         $one2 = [$range5];
-        self::assertEquals($one2, RangeOptimizer::optimizeV4($range2, $range3, $range4));
+        self::assertEquals($one2, BlockOptimizer::optimizeV4($range2, $range3, $range4));
     }
 
     public function testMergeDown(): void
     {
-        $range1 = IPv6Range::fromString('2001:0000::/32', strict: true);
-        $range2 = IPv6Range::fromString('2001:0001::/32', strict: true);
-        $range3 = IPv6Range::fromString('2001:0002::/31', strict: true);
-        $range4 = IPv6Range::fromString('2001:0004::/30', strict: true);
-        $range5 = IPv6Range::fromString('2001:0008::/29', strict: true);
+        $range1 = IPv6Block::fromString('2001:0000::/32', strict: true);
+        $range2 = IPv6Block::fromString('2001:0001::/32', strict: true);
+        $range3 = IPv6Block::fromString('2001:0002::/31', strict: true);
+        $range4 = IPv6Block::fromString('2001:0004::/30', strict: true);
+        $range5 = IPv6Block::fromString('2001:0008::/29', strict: true);
 
-        $result = IPv6Range::fromString('2001:0000::/28', strict: true);
+        $result = IPv6Block::fromString('2001:0000::/28', strict: true);
 
-        self::assertEquals([$result], RangeOptimizer::optimizeV6($range1, $range2, $range3, $range4, $range5));
+        self::assertEquals([$result], BlockOptimizer::optimizeV6($range1, $range2, $range3, $range4, $range5));
     }
 
     public function testMergeUp(): void
     {
-        $range1 = IPv6Range::fromString('2001:0000::/29', strict: true);
-        $range2 = IPv6Range::fromString('2001:0008::/30', strict: true);
-        $range3 = IPv6Range::fromString('2001:000c::/31', strict: true);
-        $range4 = IPv6Range::fromString('2001:000e::/32', strict: true);
-        $range5 = IPv6Range::fromString('2001:000f::/32', strict: true);
+        $range1 = IPv6Block::fromString('2001:0000::/29', strict: true);
+        $range2 = IPv6Block::fromString('2001:0008::/30', strict: true);
+        $range3 = IPv6Block::fromString('2001:000c::/31', strict: true);
+        $range4 = IPv6Block::fromString('2001:000e::/32', strict: true);
+        $range5 = IPv6Block::fromString('2001:000f::/32', strict: true);
 
-        $result = IPv6Range::fromString('2001:0000::/28', strict: true);
+        $result = IPv6Block::fromString('2001:0000::/28', strict: true);
 
-        self::assertEquals([$result], RangeOptimizer::optimizeV6($range1, $range2, $range3, $range4, $range5));
+        self::assertEquals([$result], BlockOptimizer::optimizeV6($range1, $range2, $range3, $range4, $range5));
     }
 }

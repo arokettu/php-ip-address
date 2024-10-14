@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Arokettu\IP\Tests;
 
-use Arokettu\IP\IPv4Range;
-use Arokettu\IP\IPv6Range;
+use Arokettu\IP\IPv4Block;
+use Arokettu\IP\IPv6Block;
 use PHPUnit\Framework\TestCase;
 
 class RangeMiscGettersTest extends TestCase
 {
     public function testFirstLast(): void
     {
-        $range4 = IPv4Range::fromString('157.240.0.0/16');
-        $range6 = IPv6Range::fromString('2a03:2880::/29');
+        $range4 = IPv4Block::fromString('157.240.0.0/16');
+        $range6 = IPv6Block::fromString('2a03:2880::/29');
 
         self::assertEquals('157.240.0.0', (string)$range4->getFirstAddress());
         self::assertEquals('157.240.255.255', (string)$range4->getLastAddress());
@@ -24,8 +24,8 @@ class RangeMiscGettersTest extends TestCase
 
     public function testBaseGetters(): void
     {
-        $range4 = IPv4Range::fromString('157.240.0.0/16');
-        $range6 = IPv6Range::fromString('2a03:2880::/29');
+        $range4 = IPv4Block::fromString('157.240.0.0/16');
+        $range6 = IPv6Block::fromString('2a03:2880::/29');
 
         self::assertEquals('9df00000', bin2hex($range4->getBytes()));
         self::assertEquals('ffff0000', bin2hex($range4->getMaskBytes()));

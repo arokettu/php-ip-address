@@ -7,11 +7,11 @@ namespace Arokettu\IP;
 use DomainException;
 
 /**
- * @template-implements AnyIPRange<IPv6Address>
+ * @template-implements AnyIPBlock<IPv6Address>
  */
-final readonly class IPv6Range implements AnyIPRange
+final readonly class IPv6Block implements AnyIPBlock
 {
-    use Helpers\IPRangeCommonTrait;
+    use Helpers\IPBlockCommonTrait;
 
     private const TYPE = 'IPv6';
     private const BYTES = 16;
@@ -50,7 +50,7 @@ final readonly class IPv6Range implements AnyIPRange
         return ($addressOrRange->bytes & $this->maskBytes) === $this->bytes;
     }
 
-    public function nonStrictContains(IPv4Address|IPv6Address|IPv4Range|IPv6Range $addressOrRange): bool
+    public function nonStrictContains(IPv4Address|IPv6Address|IPv4Block|IPv6Block $addressOrRange): bool
     {
         if ($addressOrRange instanceof self || $addressOrRange instanceof IPv6Address) {
             return $this->strictContains($addressOrRange);

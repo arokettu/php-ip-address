@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Arokettu\IP\Tests;
 
 use Arokettu\IP\IPv4Address;
-use Arokettu\IP\IPv4Range;
+use Arokettu\IP\IPv4Block;
 use Arokettu\IP\IPv6Address;
-use Arokettu\IP\IPv6Range;
+use Arokettu\IP\IPv6Block;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
@@ -18,10 +18,10 @@ class RangeContainsTest extends TestCase
         $ip1 = IPv4Address::fromString('192.168.1.100');
         $ip2 = IPv4Address::fromString('127.0.0.1');
 
-        $range1 = IPv4Range::fromString('127.0.0.0/8');
-        $range2 = IPv4Range::fromString('192.168.1.0/24');
-        $range3 = IPv4Range::fromString('192.168.0.0/16');
-        $range4 = IPv4Range::fromString('0.0.0.0/0'); // all addresses
+        $range1 = IPv4Block::fromString('127.0.0.0/8');
+        $range2 = IPv4Block::fromString('192.168.1.0/24');
+        $range3 = IPv4Block::fromString('192.168.0.0/16');
+        $range4 = IPv4Block::fromString('0.0.0.0/0'); // all addresses
 
         // ip 1
         self::assertFalse($range1->contains($ip1));
@@ -65,10 +65,10 @@ class RangeContainsTest extends TestCase
         $ip1 = IPv6Address::fromString('2a03:2880:f113:81:face:b00c:0:25de');
         $ip2 = IPv6Address::fromString('2a00:1450:4026:808::200e');
 
-        $range1 = IPv6Range::fromString('2a00:1450:4000::/37');
-        $range2 = IPv6Range::fromString('2a03:2880::/29');
-        $range3 = IPv6Range::fromString('2a03::/16');
-        $range4 = IPv6Range::fromString('::/0'); // all addresses
+        $range1 = IPv6Block::fromString('2a00:1450:4000::/37');
+        $range2 = IPv6Block::fromString('2a03:2880::/29');
+        $range3 = IPv6Block::fromString('2a03::/16');
+        $range4 = IPv6Block::fromString('::/0'); // all addresses
 
         // ip 1
         self::assertFalse($range1->contains($ip1));
@@ -112,8 +112,8 @@ class RangeContainsTest extends TestCase
         $ip4 = IPv4Address::fromString('192.168.1.100');
         $ip6 = IPv6Address::fromString('2a00:1450:4026:808::200e');
 
-        $range4 = IPv4Range::fromString('0.0.0.0/0'); // all addresses
-        $range6 = IPv6Range::fromString('::/0'); // all addresses
+        $range4 = IPv4Block::fromString('0.0.0.0/0'); // all addresses
+        $range6 = IPv6Block::fromString('::/0'); // all addresses
 
         self::assertFalse($range4->contains($ip6));
         self::assertFalse($range6->contains($ip4));
@@ -124,7 +124,7 @@ class RangeContainsTest extends TestCase
 
     public function testStrictV4Address(): void
     {
-        $range4 = IPv4Range::fromString('0.0.0.0/0');
+        $range4 = IPv4Block::fromString('0.0.0.0/0');
         $ip6 = IPv6Address::fromString('2a00:1450:4026:808::200e');
 
         $this->expectException(TypeError::class);
@@ -134,8 +134,8 @@ class RangeContainsTest extends TestCase
 
     public function testStrictV4Range(): void
     {
-        $range4 = IPv4Range::fromString('0.0.0.0/0');
-        $range6 = IPv6Range::fromString('::/0');
+        $range4 = IPv4Block::fromString('0.0.0.0/0');
+        $range6 = IPv6Block::fromString('::/0');
 
         $this->expectException(TypeError::class);
 
@@ -144,7 +144,7 @@ class RangeContainsTest extends TestCase
 
     public function testStrictV6Address(): void
     {
-        $range6 = IPv6Range::fromString('::/0');
+        $range6 = IPv6Block::fromString('::/0');
         $ip4 = IPv4Address::fromString('192.168.1.100');
 
         $this->expectException(TypeError::class);
@@ -154,8 +154,8 @@ class RangeContainsTest extends TestCase
 
     public function testStrictV6Range(): void
     {
-        $range6 = IPv6Range::fromString('::/0');
-        $range4 = IPv4Range::fromString('0.0.0.0/0');
+        $range6 = IPv6Block::fromString('::/0');
+        $range4 = IPv4Block::fromString('0.0.0.0/0');
 
         $this->expectException(TypeError::class);
 

@@ -5,30 +5,30 @@ declare(strict_types=1);
 namespace Arokettu\IP\Tools;
 
 use Arokettu\IP\Helpers\BytesHelper;
-use Arokettu\IP\IPv4Range;
-use Arokettu\IP\IPv6Range;
+use Arokettu\IP\IPv4Block;
+use Arokettu\IP\IPv6Block;
 
-final readonly class RangeOptimizer
+final readonly class BlockOptimizer
 {
     /**
-     * @return array<IPv4Range>
+     * @return array<IPv4Block>
      */
-    public static function optimizeV4(IPv4Range ...$ranges): array
+    public static function optimizeV4(IPv4Block ...$ranges): array
     {
         return self::optimize($ranges);
     }
 
     /**
-     * @return array<IPv6Range>
+     * @return array<IPv6Block>
      */
-    public static function optimizeV6(IPv6Range ...$ranges): array
+    public static function optimizeV6(IPv6Block ...$ranges): array
     {
         return self::optimize($ranges);
     }
 
     private static function optimize(array $ranges): array
     {
-        /** @var list<IPv4Range>|list<IPv6Range> $ranges */
+        /** @var list<IPv4Block>|list<IPv6Block> $ranges */
 
         $count = \count($ranges);
         if ($count < 2) {

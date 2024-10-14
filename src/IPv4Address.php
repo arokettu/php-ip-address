@@ -21,8 +21,8 @@ final readonly class IPv4Address implements AnyIPAddress
         }
     }
 
-    public function toRange(int $prefix = -1): IPv4Range
+    public function toRange(int $prefix = -1): IPv4Block
     {
-        return IPv4Range::fromBytes($this->bytes, $prefix);
+        return IPv4Block::fromBytes($this->bytes, $prefix);
     }
 }
