@@ -21,6 +21,7 @@ Documentation
    addresses
    blocks
    tools
+   upgrade
 
 License
 =======
