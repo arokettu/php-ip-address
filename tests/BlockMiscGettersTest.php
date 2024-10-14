@@ -8,7 +8,7 @@ use Arokettu\IP\IPv4Block;
 use Arokettu\IP\IPv6Block;
 use PHPUnit\Framework\TestCase;
 
-class RangeMiscGettersTest extends TestCase
+class BlockMiscGettersTest extends TestCase
 {
     public function testFirstLast(): void
     {

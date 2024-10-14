@@ -10,7 +10,7 @@ use Arokettu\IP\Tools\CompareHelper;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
-class RangeCompareTest extends TestCase
+class BlockCompareTest extends TestCase
 {
     public function testV4Compare(): void
     {

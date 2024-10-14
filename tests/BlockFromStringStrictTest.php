@@ -11,7 +11,7 @@ use BadMethodCallException;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 
-class RangeFromStringStrictTest extends TestCase
+class BlockFromStringStrictTest extends TestCase
 {
     public function testV4FromString(): void
     {

@@ -9,7 +9,7 @@ use Arokettu\IP\IPv6Block;
 use Arokettu\IP\Tools\BlockOptimizer;
 use PHPUnit\Framework\TestCase;
 
-class RangeOptimizerTest extends TestCase
+class BlockOptimizerTest extends TestCase
 {
     public function testIPv4(): void
     {

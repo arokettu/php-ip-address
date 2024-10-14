@@ -10,7 +10,7 @@ use Arokettu\IP\IPv6Block;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 
-class RangeFromBytesNonStrictTest extends TestCase
+class BlockFromBytesNonStrictTest extends TestCase
 {
     public function testV4NonStrictBytes(): void
     {
