@@ -152,6 +152,11 @@ trait IPBlockCommonTrait
         return inet_ntop($this->maskBytes);
     }
 
+    public function isSingleAddress(): bool
+    {
+        return $this->prefix === self::BITS;
+    }
+
     public function toString(): string
     {
         return sprintf("%s/%d", inet_ntop($this->bytes), $this->prefix);
