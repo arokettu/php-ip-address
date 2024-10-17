@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\IP;
 
+use Arokettu\IP\Helpers\BytesHelper;
 use DomainException;
 
 final readonly class IPv4Address implements AnyIPAddress
@@ -24,5 +25,15 @@ final readonly class IPv4Address implements AnyIPAddress
     public function toBlock(int $prefix = -1): IPv4Block
     {
         return IPv4Block::fromBytes($this->bytes, $prefix);
+    }
+
+    public function toMappedIPv6(): IPv6Address
+    {
+        return IPv6Address::fromBytes(BytesHelper::MAPPED_BYTES_PREFIX . $this->bytes);
+    }
+
+    public function toCompatibleIPv6(): IPv6Address
+    {
+        return IPv6Address::fromBytes(BytesHelper::COMPATIBLE_BYTES_PREFIX . $this->bytes);
     }
 }

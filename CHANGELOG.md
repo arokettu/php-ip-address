@@ -2,6 +2,12 @@
 
 ## 2.x
 
+### next
+
+* IPv4:
+  * `toMappedIPv6()`
+  * `toCompatibleIPv6()`
+
 ### 2.0.0
 
 *Oct 14, 2024*

@@ -9,6 +9,9 @@ namespace Arokettu\IP\Helpers;
  */
 final class BytesHelper
 {
+    public const COMPATIBLE_BYTES_PREFIX = "\0\0\0\0\0\0\0\0\0\0\0\0";
+    public const MAPPED_BYTES_PREFIX = "\0\0\0\0\0\0\0\0\0\0\xff\xff";
+
     private static array $maskBytes = [];
     private static array $bitAtPosition = [];
 
