@@ -45,3 +45,50 @@ Converts IPv4 to a compatible IPv6, the legacy way to express IPv4 as IPv6::
 
     var_dump($address->toCompatibleIPv6()); // ::192.168.0.1
     var_dump($block->toCompatibleIPv6()); // ::192.168.0.0/120
+
+IPv6 to IPv4
+============
+
+Check if IPv6 encodes IPv4
+--------------------------
+
+* ``IPv4Address::isMappedIPv4()`` /  ``IPv4Block::isMappedIPv4()``
+* ``IPv4Address::isCompatibleIPv4()`` /  ``IPv4Block::isCompatibleIPv4()``
+* ``IPv4Address::isIPv4()`` /  ``IPv4Block::isIPv4()``
+
+Checks if the address encodes IPv6 as a mapped or compatible address or any of them::
+
+    <?php
+
+    use Arokettu\IP\IPv6Address;
+    use Arokettu\IP\IPv6Block;
+
+    $address = IPv6Address::fromString('::ffff:192.168.0.1');
+    $block   = IPv6Block::fromString('::ffff:192.168.0.0/120');
+
+    $address->isMappedIPv4(); // true
+    $address->isCompatibleIPv4(); // false
+    $address->isIPv4(); // true
+
+    $block->isMappedIPv4(); // true
+    $block->isCompatibleIPv4(); // false
+    $block->isIPv4(); // true
+
+Get encoded IPv4
+----------------
+
+* ``IPv4Address::getIPv4()``
+* ``IPv4Block::getIPv4()``
+
+If IPv6 encodes IPv4, returns this address or block::
+
+    <?php
+
+    use Arokettu\IP\IPv6Address;
+    use Arokettu\IP\IPv6Block;
+
+    $address = IPv6Address::fromString('::ffff:192.168.0.1');
+    $block   = IPv6Block::fromString('::ffff:192.168.0.0/120');
+
+    var_dump((string)$address->getIPv4()); // 192.168.0.1
+    var_dump((string)$block->getIPv4()); // 192.168.0.0/24
