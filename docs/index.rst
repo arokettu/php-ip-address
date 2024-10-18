@@ -20,6 +20,7 @@ Documentation
 
    addresses
    blocks
+   ipv4_ipv6
    tools
    upgrade
 

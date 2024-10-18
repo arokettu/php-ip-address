@@ -101,6 +101,7 @@ Returns ``boolean``.
 
 ``toString()``
 --------------
+
 Returns the canonical string representation of the IP::
 
     <?php
