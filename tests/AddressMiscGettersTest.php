@@ -6,6 +6,7 @@ namespace Arokettu\IP\Tests;
 
 use Arokettu\IP\IPv4Address;
 use Arokettu\IP\IPv6Address;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
 class AddressMiscGettersTest extends TestCase
@@ -35,5 +36,45 @@ class AddressMiscGettersTest extends TestCase
 
         self::assertEquals('97.0.0.0/8', (string)$ip4->toBlock(8));
         self::assertEquals('6162:6364::/32', (string)$ip6->toBlock(32));
+    }
+
+    public function testIPv6Conversion(): void
+    {
+        $ip = IPv4Address::fromString('64.92.175.4');
+
+        self::assertEquals('::ffff:64.92.175.4', (string)$ip->toMappedIPv6());
+        self::assertEquals('::64.92.175.4', (string)$ip->toCompatibleIPv6());
+    }
+
+    public function testIPv4EncodedInIPv6(): void
+    {
+        $ipMapped = IPv6Address::fromString('::ffff:64.92.175.4');
+        $ipCompat = IPv6Address::fromString('::64.92.175.4');
+        $ipNotV4  = IPv6Address::fromString('2001::64.92.175.4');
+
+        self::assertTrue($ipMapped->isMappedIPv4());
+        self::assertFalse($ipCompat->isMappedIPv4());
+        self::assertFalse($ipNotV4->isMappedIPv4());
+
+        self::assertFalse($ipMapped->isCompatibleIPv4());
+        self::assertTrue($ipCompat->isCompatibleIPv4());
+        self::assertFalse($ipNotV4->isCompatibleIPv4());
+
+        self::assertTrue($ipMapped->isIPv4());
+        self::assertTrue($ipCompat->isIPv4());
+        self::assertFalse($ipNotV4->isIPv4());
+
+        self::assertEquals('64.92.175.4', (string)$ipMapped->getIPv4());
+        self::assertEquals('64.92.175.4', (string)$ipCompat->getIPv4());
+    }
+
+    public function testIPv4NotEncodedInIPv6(): void
+    {
+        $ipNotV4 = IPv6Address::fromString('2001::64.92.175.4');
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('This IPv6 address does not encode IPv4');
+
+        $ipNotV4->getIPv4();
     }
 }
