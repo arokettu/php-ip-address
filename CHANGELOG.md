@@ -2,11 +2,19 @@
 
 ## 2.x
 
-### next
+### 2.1.0
 
-* IPv4:
-  * `toMappedIPv6()`
-  * `toCompatibleIPv6()`
+*Oct 19, 2024*
+
+* For both addresses and blocks, methods to work with IPv4 to IPv6 mapping:
+  * IPv4:
+    * `toMappedIPv6()`
+    * `toCompatibleIPv6()`
+  * IPv6:
+    * `isMappedIPv4()`
+    * `isCompatibleIPv4()`
+    * `isIPv4()`
+    * `getIPv4()`
 
 ### 2.0.0
 
