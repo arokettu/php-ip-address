@@ -15,6 +15,8 @@
     * `isCompatibleIPv4()`
     * `isIPv4()`
     * `getIPv4()`
+* Blocks:
+  * `isSingleAddress()`
 
 ### 2.0.0
 

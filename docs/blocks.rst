@@ -179,7 +179,7 @@ Returns the canonical string representation of the IP block in CIDR notation::
     echo $block->toString(); // 127.0.0.0/8
 
 Other getters
------------------
+-------------
 
 ``getBytes()``
     Byte representation of the base address
@@ -193,3 +193,5 @@ Other getters
     The first IP in the block, also its base address
 ``getLastAddress()``
     The last IP in the block, the multicast address for the IPv4
+``isSingleAddress()``
+    If the block encodes a single address (``/32`` for v4 or ``/128`` for v6)

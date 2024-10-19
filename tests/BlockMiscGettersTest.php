@@ -78,4 +78,17 @@ class BlockMiscGettersTest extends TestCase
 
         $ipNotV4->getIPv4();
     }
+
+    public function testSingleAddress(): void
+    {
+        $single4 = IPv4Block::fromString('127.0.0.1', -1);
+        $single6 = IPv6Block::fromString('::1', -1);
+        $range4  = IPv4Block::fromString('127.0.0.0/8');
+        $range6  = IPv6Block::fromString('::/16');
+
+        self::assertTrue($single4->isSingleAddress());
+        self::assertTrue($single6->isSingleAddress());
+        self::assertFalse($range4->isSingleAddress());
+        self::assertFalse($range6->isSingleAddress());
+    }
 }
