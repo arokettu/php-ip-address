@@ -30,6 +30,9 @@ Converts IPv4 to a mapped IPv6, the preferred way to express IPv4 as IPv6::
 Compatible IPv4
 ---------------
 
+.. note::
+    This is a legacy mechanism and this library does not treat the resulting address as an encoded IPv4 since 2.1.1.
+
 * ``IPv4Address::toCompatibleIPv6()``
 * ``IPv4Block::toCompatibleIPv6()``
 
@@ -51,6 +54,10 @@ IPv6 to IPv4
 
 Check if IPv6 encodes IPv4
 --------------------------
+
+.. versionchanged:: 2.1.1
+    ``isIPv4()``` no longer returns true for "compatible" IPv4.
+    Therefore it's effectively an alias of ``isMappedIPv4()``.
 
 * ``IPv4Address::isMappedIPv4()`` /  ``IPv4Block::isMappedIPv4()``
 * ``IPv4Address::isCompatibleIPv4()`` /  ``IPv4Block::isCompatibleIPv4()``
@@ -76,6 +83,9 @@ Checks if the address encodes IPv6 as a mapped or compatible address or any of t
 
 Get encoded IPv4
 ----------------
+
+.. versionchanged:: 2.1.1
+    "Compatible" IPv4 range is no longer considered being a representation of IPv4.
 
 * ``IPv4Address::getIPv4()``
 * ``IPv4Block::getIPv4()``

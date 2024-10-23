@@ -82,13 +82,13 @@ final readonly class IPv6Block implements AnyIPBlock
 
     public function isIPv4(): bool
     {
-        return $this->isMappedIPv4() || $this->isCompatibleIPv4();
+        return $this->isMappedIPv4();
     }
 
     public function getIPv4(): IPv4Block
     {
         if (!$this->isIPv4()) {
-            throw new DomainException('This IPv6 address does not encode IPv4');
+            throw new DomainException('This IPv6 block does not encode IPv4');
         }
 
         return IPv4Block::fromBytes(substr($this->bytes, 12), $this->prefix - 96);

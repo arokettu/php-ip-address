@@ -39,7 +39,7 @@ final readonly class IPv6Address implements AnyIPAddress
 
     public function isIPv4(): bool
     {
-        return $this->isMappedIPv4() || $this->isCompatibleIPv4();
+        return $this->isMappedIPv4();
     }
 
     public function getIPv4(): IPv4Address

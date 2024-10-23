@@ -2,6 +2,14 @@
 
 ## 2.x
 
+### 2.1.1
+
+*Oct 23, 2024*
+
+* "Compatible" IPv4 range (all zeros prefix) for IPv6 is no longer considered encoded IPv4 addresses
+  * This fixes `::` and `::1` being considered IPv4
+  * `isIPv4()` is now an alias of `isMappedIPv4()`
+
 ### 2.1.0
 
 *Oct 19, 2024*

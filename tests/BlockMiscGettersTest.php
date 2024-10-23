@@ -62,11 +62,23 @@ class BlockMiscGettersTest extends TestCase
         self::assertFalse($ipNotV4->isCompatibleIPv4());
 
         self::assertTrue($ipMapped->isIPv4());
-        self::assertTrue($ipCompat->isIPv4());
+        self::assertFalse($ipCompat->isIPv4());
         self::assertFalse($ipNotV4->isIPv4());
 
         self::assertEquals('64.92.175.0/24', (string)$ipMapped->getIPv4());
-        self::assertEquals('64.92.175.0/24', (string)$ipCompat->getIPv4());
+    }
+
+    public function testLocalhostIsNotIPv4(): void
+    {
+        $localhost = IPv6Block::fromString('::1/128');
+
+        self::assertFalse($localhost->isIPv4());
+        self::assertTrue($localhost->isCompatibleIPv4()); // this is why compatible range is problematic
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('This IPv6 block does not encode IPv4');
+
+        $localhost->getIPv4();
     }
 
     public function testIPv4NotEncodedInIPv6(): void
@@ -74,7 +86,7 @@ class BlockMiscGettersTest extends TestCase
         $ipNotV4 = IPv6Block::fromString('2001::64.92.175.0/120');
 
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('This IPv6 address does not encode IPv4');
+        $this->expectExceptionMessage('This IPv6 block does not encode IPv4');
 
         $ipNotV4->getIPv4();
     }
