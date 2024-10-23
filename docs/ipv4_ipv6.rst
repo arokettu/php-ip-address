@@ -56,7 +56,7 @@ Check if IPv6 encodes IPv4
 --------------------------
 
 .. versionchanged:: 2.1.1
-    ``isIPv4()``` no longer returns true for "compatible" IPv4.
+    ``isIPv4()`` no longer returns true for "compatible" IPv4.
     Therefore it's effectively an alias of ``isMappedIPv4()``.
 
 * ``IPv4Address::isMappedIPv4()`` /  ``IPv4Block::isMappedIPv4()``
