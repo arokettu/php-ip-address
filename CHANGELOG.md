@@ -2,6 +2,10 @@
 
 ## 2.x
 
+### next
+
+* `toFullHexString()`
+
 ### 2.1.1
 
 *Oct 23, 2024*

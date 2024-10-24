@@ -124,3 +124,26 @@ Returns the byte representation of the IP::
     $ip = IPAddress::fromString("127.0.0.1");
 
     echo bin2hex($ip->getBytes()); // 7f000001
+
+IPv6-Only Methods
+=================
+
+``toFullHexString()``
+---------------------
+
+Returns a non-shortened full hex string of the IPv6::
+
+    <?php
+
+    use Arokettu\IP\IPv4Address;
+    use Arokettu\IP\IPv6Address;
+
+    $ip = IPv6Address::fromString('2001:abc::abcd:ef00');
+
+    var_dump($ip->toString()); // 2001:abc::abcd:ef00
+    var_dump($ip->toFullHexString()); // 2001:0abc:0000:0000:0000:0000:abcd:ef00
+
+    $ip = IPv4Address::fromString('192.168.112.34')->toMappedIPv6();
+
+    var_dump($ip->toString()); // ::ffff:192.168.112.34
+    var_dump($ip->toFullHexString()); // 0000:0000:0000:0000:0000:ffff:c0a8:7022

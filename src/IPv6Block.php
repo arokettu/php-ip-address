@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Arokettu\IP;
 
 use Arokettu\IP\Helpers\BytesHelper;
+use Arokettu\IP\Helpers\Formatter;
 use DomainException;
 
 /**
@@ -92,5 +93,10 @@ final readonly class IPv6Block implements AnyIPBlock
         }
 
         return IPv4Block::fromBytes(substr($this->bytes, 12), $this->prefix - 96);
+    }
+
+    public function toFullHexString(): string
+    {
+        return sprintf("%s/%d", Formatter::v6ToFullHexString($this->bytes), $this->prefix);
     }
 }

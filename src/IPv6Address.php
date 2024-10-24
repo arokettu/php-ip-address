@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Arokettu\IP;
 
 use Arokettu\IP\Helpers\BytesHelper;
+use Arokettu\IP\Helpers\Formatter;
 use DomainException;
 
 final readonly class IPv6Address implements AnyIPAddress
@@ -49,5 +50,10 @@ final readonly class IPv6Address implements AnyIPAddress
         }
 
         return IPv4Address::fromBytes(substr($this->bytes, 12));
+    }
+
+    public function toFullHexString(): string
+    {
+        return Formatter::v6ToFullHexString($this->bytes);
     }
 }

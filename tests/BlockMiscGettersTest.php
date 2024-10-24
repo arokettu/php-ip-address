@@ -103,4 +103,13 @@ class BlockMiscGettersTest extends TestCase
         self::assertFalse($range4->isSingleAddress());
         self::assertFalse($range6->isSingleAddress());
     }
+
+    public function testFullHex(): void
+    {
+        $lh = IPv6Block::fromString('::1/128');
+        $ip = IPv6Block::fromString('2001::64.92.0.0/112');
+
+        self::assertEquals('0000:0000:0000:0000:0000:0000:0000:0001/128', $lh->toFullHexString());
+        self::assertEquals('2001:0000:0000:0000:0000:0000:405c:0000/112', $ip->toFullHexString());
+    }
 }

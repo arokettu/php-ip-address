@@ -195,3 +195,26 @@ Other getters
     The last IP in the block, the multicast address for the IPv4
 ``isSingleAddress()``
     If the block encodes a single address (``/32`` for v4 or ``/128`` for v6)
+
+IPv6-Only Methods
+=================
+
+``toFullHexString()``
+---------------------
+
+Returns a non-shortened full hex string of the IPv6::
+
+    <?php
+
+    use Arokettu\IP\IPv4Block;
+    use Arokettu\IP\IPv6Block;
+
+    $ip = IPv6Block::fromString('2001:abc::abcd:0/112');
+
+    var_dump($ip->toString()); // 2001:abc::abcd:0/112
+    var_dump($ip->toFullHexString()); // 2001:0abc:0000:0000:0000:0000:abcd:0000/112
+
+    $ip = IPv4Block::fromString('192.168.112.0/24')->toMappedIPv6();
+
+    var_dump($ip->toString()); // ::ffff:192.168.112.0/120
+    var_dump($ip->toFullHexString()); // 0000:0000:0000:0000:0000:ffff:c0a8:7000/120

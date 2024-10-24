@@ -89,4 +89,13 @@ class AddressMiscGettersTest extends TestCase
 
         $ipNotV4->getIPv4();
     }
+
+    public function testFullHex(): void
+    {
+        $lh = IPv6Address::fromString('::1');
+        $ip = IPv6Address::fromString('2001::64.92.175.4');
+
+        self::assertEquals('0000:0000:0000:0000:0000:0000:0000:0001', $lh->toFullHexString());
+        self::assertEquals('2001:0000:0000:0000:0000:0000:405c:af04', $ip->toFullHexString());
+    }
 }
