@@ -37,8 +37,8 @@ final readonly class IPv6Address implements AnyIPAddress
     {
         return
             strncmp($this->bytes, BytesHelper::COMPATIBLE_BYTES_PREFIX, 12) === 0 &&
-            strcmp($this->bytes, BytesHelper::IPV6_LOCALHOST) !== 0 &&
-            strcmp($this->bytes, BytesHelper::IPV6_ZERO) !== 0;
+            substr_compare($this->bytes, BytesHelper::IPV6_LOCALHOST_SUFFIX, 12) !== 0 &&
+            substr_compare($this->bytes, BytesHelper::IPV6_ZERO_SUFFIX, 12) !== 0;
     }
 
     /**
