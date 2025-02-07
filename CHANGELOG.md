@@ -2,9 +2,15 @@
 
 ## 2.x
 
-### next
+### 2.2.0
 
-* `toFullHexString()`
+*Feb 7, 2025*
+
+* IPv6 addresses and blocks:
+  * `isCompatibleIPv4()` no longer returns true for `::` and `::1`
+  * `getIPv4()` has new param `$allowCompatible` that allows to get "compatible" IPv4 addresses as well
+  * `isIPv4()` is deprecated
+  * `toFullHexString()` returns non-shortened hex representation of the address
 
 ### 2.1.1
 
