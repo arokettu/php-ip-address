@@ -30,6 +30,8 @@ Converts IPv4 to a mapped IPv6, the preferred way to express IPv4 as IPv6::
 Compatible IPv4
 ---------------
 
+.. versionchanged:: 2.2.0 ``::1`` and ``::`` are no longer considered valid Compatible IPv4
+
 .. note::
     This is a legacy mechanism and this library does not treat the resulting address as an encoded IPv4 since 2.1.1.
 
@@ -58,6 +60,8 @@ Check if IPv6 encodes IPv4
 .. versionchanged:: 2.1.1
     ``isIPv4()`` no longer returns true for "compatible" IPv4.
     Therefore it's effectively an alias of ``isMappedIPv4()``.
+.. versionchanged:: 2.2.0
+    ``isIPv4()`` is deprecated.
 
 * ``IPv4Address::isMappedIPv4()`` /  ``IPv4Block::isMappedIPv4()``
 * ``IPv4Address::isCompatibleIPv4()`` /  ``IPv4Block::isCompatibleIPv4()``
@@ -86,6 +90,8 @@ Get encoded IPv4
 
 .. versionchanged:: 2.1.1
     "Compatible" IPv4 range is no longer considered being a representation of IPv4.
+.. versionchanged:: 2.2.0
+    "Compatible" IPv4 address can now be retrieved by a relaxed mode.
 
 * ``IPv4Address::getIPv4()``
 * ``IPv4Block::getIPv4()``
@@ -102,3 +108,15 @@ If IPv6 encodes IPv4, returns this address or block::
 
     var_dump((string)$address->getIPv4()); // 192.168.0.1
     var_dump((string)$block->getIPv4()); // 192.168.0.0/24
+
+    // relaxed mode for "compatible" addresses
+
+    $address = IPv6Address::fromString('::192.168.0.1');
+    $block   = IPv6Block::fromString('::192.168.0.0/120');
+
+    var_dump((string)$address->getIPv4(true)); // 192.168.0.1
+    var_dump((string)$block->getIPv4(true)); // 192.168.0.0/24
+
+    // but not by default:
+    IPv6Address::fromString('::192.168.0.1')
+        ->getIPv4(); // DomainException: This IPv6 address does not encode IPv4
