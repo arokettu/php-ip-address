@@ -35,21 +35,27 @@ final readonly class IPv6Address implements AnyIPAddress
 
     public function isCompatibleIPv4(): bool
     {
-        return strncmp($this->bytes, BytesHelper::COMPATIBLE_BYTES_PREFIX, 12) === 0;
+        return
+            strncmp($this->bytes, BytesHelper::COMPATIBLE_BYTES_PREFIX, 12) === 0 &&
+            strcmp($this->bytes, BytesHelper::IPV6_LOCALHOST) !== 0 &&
+            strcmp($this->bytes, BytesHelper::IPV6_ZERO) !== 0;
     }
 
+    /**
+     * @deprecated Use isMappedIPv4() / isCompatibleIPv4() explicitly
+     */
     public function isIPv4(): bool
     {
         return $this->isMappedIPv4();
     }
 
-    public function getIPv4(): IPv4Address
+    public function getIPv4(bool $allowCompatible = false): IPv4Address
     {
-        if (!$this->isIPv4()) {
-            throw new DomainException('This IPv6 address does not encode IPv4');
+        if ($this->isMappedIPv4() || $allowCompatible && $this->isCompatibleIPv4()) {
+            return IPv4Address::fromBytes(substr($this->bytes, 12));
         }
 
-        return IPv4Address::fromBytes(substr($this->bytes, 12));
+        throw new DomainException('This IPv6 address does not encode IPv4');
     }
 
     public function toFullHexString(): string

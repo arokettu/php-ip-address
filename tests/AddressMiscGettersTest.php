@@ -65,14 +65,38 @@ class AddressMiscGettersTest extends TestCase
         self::assertFalse($ipNotV4->isIPv4());
 
         self::assertEquals('64.92.175.4', (string)$ipMapped->getIPv4());
+        self::assertEquals('64.92.175.4', (string)$ipCompat->getIPv4(true));
+    }
+
+    public function testIPv4CompatibleIsNotIPv4ByDefault(): void
+    {
+        $ipCompat = IPv6Address::fromString('::64.92.175.4');
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('This IPv6 address does not encode IPv4');
+
+        self::assertEquals('64.92.175.4', (string)$ipCompat->getIPv4());
     }
 
     public function testLocalhostIsNotIPv4(): void
     {
         $localhost = IPv6Address::fromString('::1');
 
-        self::assertFalse($localhost->isIPv4());
-        self::assertTrue($localhost->isCompatibleIPv4()); // this is why compatible range is problematic
+        self::assertFalse($localhost->isMappedIPv4());
+        self::assertFalse($localhost->isCompatibleIPv4());
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('This IPv6 address does not encode IPv4');
+
+        $localhost->getIPv4();
+    }
+
+    public function testZeroIsNotIPv4(): void
+    {
+        $localhost = IPv6Address::fromString('::');
+
+        self::assertFalse($localhost->isMappedIPv4());
+        self::assertFalse($localhost->isCompatibleIPv4());
 
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('This IPv6 address does not encode IPv4');

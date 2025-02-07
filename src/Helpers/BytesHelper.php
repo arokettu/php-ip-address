@@ -11,6 +11,8 @@ final class BytesHelper
 {
     public const COMPATIBLE_BYTES_PREFIX = "\0\0\0\0\0\0\0\0\0\0\0\0";
     public const MAPPED_BYTES_PREFIX = "\0\0\0\0\0\0\0\0\0\0\xff\xff";
+    public const IPV6_LOCALHOST = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\1";
+    public const IPV6_ZERO = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
 
     private static array $maskBytes = [];
     private static array $bitAtPosition = [];

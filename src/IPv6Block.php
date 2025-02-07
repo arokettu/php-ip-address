@@ -78,21 +78,28 @@ final readonly class IPv6Block implements AnyIPBlock
 
     public function isCompatibleIPv4(): bool
     {
-        return $this->prefix >= 96 && strncmp($this->bytes, BytesHelper::COMPATIBLE_BYTES_PREFIX, 12) === 0;
+        return
+            $this->prefix >= 96 &&
+            strncmp($this->bytes, BytesHelper::COMPATIBLE_BYTES_PREFIX, 12) === 0 &&
+            strcmp($this->bytes, BytesHelper::IPV6_LOCALHOST) !== 0 &&
+            strcmp($this->bytes, BytesHelper::IPV6_ZERO) !== 0;
     }
 
+    /**
+     * @deprecated Use isMappedIPv4() / isCompatibleIPv4() explicitly
+     */
     public function isIPv4(): bool
     {
         return $this->isMappedIPv4();
     }
 
-    public function getIPv4(): IPv4Block
+    public function getIPv4(bool $allowCompatible = false): IPv4Block
     {
-        if (!$this->isIPv4()) {
-            throw new DomainException('This IPv6 block does not encode IPv4');
+        if ($this->isMappedIPv4() || $allowCompatible && $this->isCompatibleIPv4()) {
+            return IPv4Block::fromBytes(substr($this->bytes, 12), $this->prefix - 96);
         }
 
-        return IPv4Block::fromBytes(substr($this->bytes, 12), $this->prefix - 96);
+        throw new DomainException('This IPv6 block does not encode IPv4');
     }
 
     public function toFullHexString(): string
