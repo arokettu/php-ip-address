@@ -104,6 +104,6 @@ final readonly class IPv6Block implements AnyIPBlock
 
     public function toFullHexString(): string
     {
-        return sprintf("%s/%d", Formatter::v6ToFullHexString($this->bytes), $this->prefix);
+        return \sprintf("%s/%d", Formatter::v6ToFullHexString($this->bytes), $this->prefix);
     }
 }

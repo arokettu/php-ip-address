@@ -29,7 +29,7 @@ trait IPAddressCommonTrait
     {
         $bytes = inet_pton($string);
         if ($bytes === false || \strlen($bytes) !== self::BYTES) {
-            throw new UnexpectedValueException(sprintf(
+            throw new UnexpectedValueException(\sprintf(
                 '$string must be a valid %s address, "%s" given',
                 self::TYPE,
                 $string,

@@ -21,7 +21,7 @@ final readonly class IPAddress
         return match (\strlen($bytes)) {
             4 => IPv4Address::fromBytes($bytes),
             16 => IPv6Address::fromBytes($bytes),
-            default => throw new UnexpectedValueException(sprintf(
+            default => throw new UnexpectedValueException(\sprintf(
                 'IP address was not recognized, %d is not a valid byte length',
                 \strlen($bytes)
             )),
@@ -32,7 +32,7 @@ final readonly class IPAddress
     {
         $bytes = inet_pton($string);
         if ($bytes === false) {
-            throw new UnexpectedValueException(sprintf(
+            throw new UnexpectedValueException(\sprintf(
                 '$string must be a valid IP address, "%s" given',
                 $string,
             ));

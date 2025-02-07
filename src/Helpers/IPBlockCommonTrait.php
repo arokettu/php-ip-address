@@ -35,7 +35,7 @@ trait IPBlockCommonTrait
         }
 
         if (\strlen($bytes) !== self::BYTES) {
-            throw new UnexpectedValueException(sprintf(
+            throw new UnexpectedValueException(\sprintf(
                 'Base address for the %s block must be exactly %d bytes',
                 self::TYPE,
                 self::BYTES,
@@ -43,7 +43,7 @@ trait IPBlockCommonTrait
         }
         if ($prefix < 0) {
             if ($prefix < -self::BITS) {
-                throw new UnexpectedValueException(sprintf(
+                throw new UnexpectedValueException(\sprintf(
                     'Negative prefix for the %s block must be greater than or equal to -%d',
                     self::TYPE,
                     self::BITS,
@@ -52,7 +52,7 @@ trait IPBlockCommonTrait
             $prefix += self::BITS + 1;
         }
         if ($prefix < 0 || $prefix > self::BITS) {
-            throw new UnexpectedValueException(sprintf('%s prefix must be in range 0-%d', self::TYPE, self::BITS));
+            throw new UnexpectedValueException(\sprintf('%s prefix must be in range 0-%d', self::TYPE, self::BITS));
         }
 
         $maskBytes = BytesHelper::buildMaskBytes(self::BYTES, $prefix);
@@ -71,13 +71,13 @@ trait IPBlockCommonTrait
             [$string, $prefixStr] = explode('/', $string, 2);
             $prefix = \intval($prefixStr); // succeeds but verify later
             if (!is_numeric($prefixStr) || $prefix != $prefixStr || $prefix < 0) { // non-strict here
-                throw new UnexpectedValueException(sprintf('Prefix value "%s" appears to be invalid', $prefixStr));
+                throw new UnexpectedValueException(\sprintf('Prefix value "%s" appears to be invalid', $prefixStr));
             }
         }
 
         $bytes = inet_pton($string);
         if ($bytes === false || \strlen($bytes) !== self::BYTES) {
-            throw new UnexpectedValueException(sprintf(
+            throw new UnexpectedValueException(\sprintf(
                 'Base address "%s" does not appear to be a valid %s address',
                 $string,
                 self::TYPE,
@@ -159,7 +159,7 @@ trait IPBlockCommonTrait
 
     public function toString(): string
     {
-        return sprintf("%s/%d", inet_ntop($this->bytes), $this->prefix);
+        return \sprintf("%s/%d", inet_ntop($this->bytes), $this->prefix);
     }
 
     public function __toString(): string
