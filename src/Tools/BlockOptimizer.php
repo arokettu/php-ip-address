@@ -11,22 +11,43 @@ use Arokettu\IP\IPv6Block;
 final readonly class BlockOptimizer
 {
     /**
-     * @return array<IPv4Block>
+     * @return list<IPv4Block|IPv6Block>
      */
-    public static function optimizeV4(IPv4Block ...$blocks): array
+    public static function optimize(IPv4Block|IPv6Block ...$blocks): array
     {
-        return self::optimize($blocks);
+        // separate v4 and v6
+        [$ipv4, $ipv6] = array_reduce($blocks, function ($acc, $block) {
+            if ($block instanceof IPv6Block) {
+                $acc[1][] = $block;
+            } else {
+                $acc[0][] = $block;
+            }
+            return $acc;
+        }, [[], []]);
+
+        return array_merge(
+            self::doOptimize($ipv4),
+            self::doOptimize($ipv6),
+        );
     }
 
     /**
-     * @return array<IPv6Block>
+     * @return list<IPv4Block>
+     */
+    public static function optimizeV4(IPv4Block ...$blocks): array
+    {
+        return self::doOptimize($blocks);
+    }
+
+    /**
+     * @return list<IPv6Block>
      */
     public static function optimizeV6(IPv6Block ...$blocks): array
     {
-        return self::optimize($blocks);
+        return self::doOptimize($blocks);
     }
 
-    private static function optimize(array $blocks): array
+    private static function doOptimize(array $blocks): array
     {
         /** @var list<IPv4Block>|list<IPv6Block> $blocks */
 
