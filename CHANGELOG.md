@@ -2,6 +2,12 @@
 
 ## 2.x
 
+### 2.3.0
+
+*Feb 20, 2025*
+
+* `BlockOptimizer::optimize()` that accepts mixed v4+v6 arrays
+
 ### 2.2.0
 
 *Feb 7, 2025*

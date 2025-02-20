@@ -68,7 +68,7 @@ $blocks = [
     IPv4Block::fromString('192.168.0.0/24'),
     IPv4Block::fromString('192.168.1.0/24'),
 ];
-$optimized = BlockOptimizer::optimizeV4(...$blocks); // [127.0.0.0/16, 192.168.0.0/23]
+$optimized = BlockOptimizer::optimize(...$blocks); // [127.0.0.0/16, 192.168.0.0/23]
 ```
 
 ## Documentation
