@@ -6,6 +6,9 @@ Tools
 Block Optimizer
 ===============
 
+.. versionadded:: 2.3.0 BlockOptimizer::optimize(...$blocks)
+
+* ``Arokettu\IP\Tools\BlockOptimizer::optimize(...$blocks)``
 * ``Arokettu\IP\Tools\BlockOptimizer::optimizeV4(...$blocks)``
 * ``Arokettu\IP\Tools\BlockOptimizer::optimizeV6(...$blocks)``
 
