@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 // we can test full possible ranges here so let's do exactly that
-class BytesHelperTest extends TestCase
+final class BytesHelperTest extends TestCase
 {
     #[DataProvider('ipv4Masks')]
     public function testIPv4MaskBytes(int $prefix, string $hexmask): void

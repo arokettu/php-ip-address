@@ -10,7 +10,7 @@ use Arokettu\IP\IPv6Block;
 use Arokettu\IP\Tools\BlockOptimizer;
 use PHPUnit\Framework\TestCase;
 
-class BlockOptimizerTest extends TestCase
+final class BlockOptimizerTest extends TestCase
 {
     public function testIPv4(): void
     {
@@ -60,13 +60,13 @@ class BlockOptimizerTest extends TestCase
 
         // prepare data
         $blocks = array_map(
-            fn ($s) => IPv4Block::fromString($s, -1),
+            static fn ($s) => IPv4Block::fromString($s, -1),
             $blocks,
         );
 
         $optimized = BlockOptimizer::optimizeV4(...$blocks);
 
-        $optimized = array_map(fn ($r) => $r->toString(), $optimized);
+        $optimized = array_map(static fn ($r) => $r->toString(), $optimized);
 
         self::assertEquals($optimizedExpected, $optimized);
     }
@@ -119,13 +119,13 @@ class BlockOptimizerTest extends TestCase
 
         // prepare data
         $blocks = array_map(
-            fn ($s) => IPv6Block::fromString($s, -1),
+            static fn ($s) => IPv6Block::fromString($s, -1),
             $blocks,
         );
 
         $optimized = BlockOptimizer::optimizeV6(...$blocks);
 
-        $optimized = array_map(fn ($r) => $r->toString(), $optimized);
+        $optimized = array_map(static fn ($r) => $r->toString(), $optimized);
 
         self::assertEquals($optimizedExpected, $optimized);
     }
@@ -214,13 +214,13 @@ class BlockOptimizerTest extends TestCase
 
         // prepare data
         $blocks = array_map(
-            fn ($s) => IPBlock::fromString($s, -1),
+            static fn ($s) => IPBlock::fromString($s, -1),
             $blocks,
         );
 
         $optimized = BlockOptimizer::optimize(...$blocks);
 
-        $optimized = array_map(fn ($r) => $r->toString(), $optimized);
+        $optimized = array_map(static fn ($r) => $r->toString(), $optimized);
 
         self::assertEquals($optimizedExpected, $optimized);
     }

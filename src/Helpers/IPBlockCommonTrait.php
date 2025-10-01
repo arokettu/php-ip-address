@@ -65,7 +65,7 @@ trait IPBlockCommonTrait
         if (str_contains($string, '/')) { // override mask
             if ($strict && $prefix !== null) {
                 throw new BadMethodCallException(
-                    'In strict mode prefix cannot appear in both string and $mask param'
+                    'In strict mode prefix cannot appear in both string and $mask param',
                 );
             }
             [$string, $prefixStr] = explode('/', $string, 2);
@@ -159,7 +159,7 @@ trait IPBlockCommonTrait
 
     public function toString(): string
     {
-        return \sprintf("%s/%d", inet_ntop($this->bytes), $this->prefix);
+        return \sprintf('%s/%d', inet_ntop($this->bytes), $this->prefix);
     }
 
     public function __toString(): string

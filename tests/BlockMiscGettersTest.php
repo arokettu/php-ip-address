@@ -9,7 +9,7 @@ use Arokettu\IP\IPv6Block;
 use DomainException;
 use PHPUnit\Framework\TestCase;
 
-class BlockMiscGettersTest extends TestCase
+final class BlockMiscGettersTest extends TestCase
 {
     public function testFirstLast(): void
     {

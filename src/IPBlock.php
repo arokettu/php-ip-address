@@ -31,7 +31,7 @@ final readonly class IPBlock
     public static function fromString(
         string $string,
         int|null $prefix = null,
-        bool $strict = false
+        bool $strict = false,
     ): IPv4Block|IPv6Block {
         try {
             return IPv4Block::fromString($string, $prefix, $strict);

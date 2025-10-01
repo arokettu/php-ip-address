@@ -11,7 +11,7 @@ use Arokettu\IP\IPv6Block;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
-class BlockContainsTest extends TestCase
+final class BlockContainsTest extends TestCase
 {
     public function testV4(): void
     {

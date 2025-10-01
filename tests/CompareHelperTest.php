@@ -8,7 +8,7 @@ use Arokettu\IP\IPv4Address;
 use Arokettu\IP\Tools\CompareHelper;
 use SlevomatCodingStandard\Sniffs\TestCase;
 
-class CompareHelperTest extends TestCase
+final class CompareHelperTest extends TestCase
 {
     public function testSort(): void
     {

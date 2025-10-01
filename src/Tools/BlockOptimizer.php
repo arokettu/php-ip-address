@@ -16,7 +16,7 @@ final readonly class BlockOptimizer
     public static function optimize(IPv4Block|IPv6Block ...$blocks): array
     {
         // separate v4 and v6
-        [$ipv4, $ipv6] = array_reduce($blocks, function ($acc, $block) {
+        [$ipv4, $ipv6] = array_reduce($blocks, static function ($acc, $block) {
             if ($block instanceof IPv6Block) {
                 $acc[1][] = $block;
             } else {

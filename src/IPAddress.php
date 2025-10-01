@@ -23,7 +23,7 @@ final readonly class IPAddress
             16 => IPv6Address::fromBytes($bytes),
             default => throw new UnexpectedValueException(\sprintf(
                 'IP address was not recognized, %d is not a valid byte length',
-                \strlen($bytes)
+                \strlen($bytes),
             )),
         };
     }

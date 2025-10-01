@@ -10,7 +10,7 @@ use Arokettu\IP\IPv6Address;
 use Arokettu\IP\IPv6Block;
 use PHPUnit\Framework\TestCase;
 
-class AuxMethodsTest extends TestCase
+final class AuxMethodsTest extends TestCase
 {
     public function testStringable(): void
     {

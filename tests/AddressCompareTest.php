@@ -10,7 +10,7 @@ use Arokettu\IP\Tools\CompareHelper;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
-class AddressCompareTest extends TestCase
+final class AddressCompareTest extends TestCase
 {
     public function testV4Compare(): void
     {
@@ -31,7 +31,7 @@ class AddressCompareTest extends TestCase
         self::assertFalse($ip1->equals($ip2));
 
         $toBeSorted = $unsorted;
-        usort($toBeSorted, fn ($a, $b) => CompareHelper::compare($a, $b));
+        usort($toBeSorted, static fn ($a, $b) => CompareHelper::compare($a, $b));
         self::assertEquals($sorted, $toBeSorted);
         $toBeSorted = $unsorted;
         usort($toBeSorted, CompareHelper::nonStrictCompare(...));
@@ -46,7 +46,7 @@ class AddressCompareTest extends TestCase
         self::assertFalse($ip1->equals($ip2, true));
 
         $toBeSorted = $unsorted;
-        usort($toBeSorted, fn ($a, $b) => CompareHelper::compare($a, $b, true));
+        usort($toBeSorted, static fn ($a, $b) => CompareHelper::compare($a, $b, true));
         self::assertEquals($sorted, $toBeSorted);
         $toBeSorted = $unsorted;
         usort($toBeSorted, CompareHelper::strictCompare(...));
@@ -72,7 +72,7 @@ class AddressCompareTest extends TestCase
         self::assertFalse($ip1->equals($ip2));
 
         $toBeSorted = $unsorted;
-        usort($toBeSorted, fn ($a, $b) => CompareHelper::compare($a, $b));
+        usort($toBeSorted, static fn ($a, $b) => CompareHelper::compare($a, $b));
         self::assertEquals($sorted, $toBeSorted);
         $toBeSorted = $unsorted;
         usort($toBeSorted, CompareHelper::nonStrictCompare(...));
@@ -87,7 +87,7 @@ class AddressCompareTest extends TestCase
         self::assertFalse($ip1->equals($ip2, true));
 
         $toBeSorted = $unsorted;
-        usort($toBeSorted, fn ($a, $b) => CompareHelper::compare($a, $b, true));
+        usort($toBeSorted, static fn ($a, $b) => CompareHelper::compare($a, $b, true));
         self::assertEquals($sorted, $toBeSorted);
         $toBeSorted = $unsorted;
         usort($toBeSorted, CompareHelper::strictCompare(...));

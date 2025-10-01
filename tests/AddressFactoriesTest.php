@@ -11,17 +11,17 @@ use DomainException;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 
-class AddressFactoriesTest extends TestCase
+final class AddressFactoriesTest extends TestCase
 {
     public function testV4(): void
     {
         $ip1 = new IPv4Address("\x7f\x00\x00\x01");
         self::assertEquals('127.0.0.1', $ip1->toString());
 
-        $ip2 = IPv4Address::fromBytes("abcd");
+        $ip2 = IPv4Address::fromBytes('abcd');
         self::assertEquals('97.98.99.100', $ip2->toString());
 
-        $ip3 = IPv4Address::fromString("192.168.1.100");
+        $ip3 = IPv4Address::fromString('192.168.1.100');
         self::assertEquals('192.168.1.100', $ip3->toString());
     }
 
@@ -54,18 +54,18 @@ class AddressFactoriesTest extends TestCase
         $ip1 = new IPv6Address("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\1");
         self::assertEquals('::1', $ip1->toString());
 
-        $ip2 = IPv6Address::fromBytes("abcdabcdabcdabcd");
+        $ip2 = IPv6Address::fromBytes('abcdabcdabcdabcd');
         self::assertEquals('6162:6364:6162:6364:6162:6364:6162:6364', $ip2->toString());
 
-        $ip3 = IPv6Address::fromString("2A00:1450:4026:0808:0:0:0:200E");
+        $ip3 = IPv6Address::fromString('2A00:1450:4026:0808:0:0:0:200E');
         self::assertEquals('2a00:1450:4026:808::200e', $ip3->toString());
 
         // special normalization for IPv4 mapping
-        $ip4 = IPv6Address::fromString("::ffff:c0a8:0164");
+        $ip4 = IPv6Address::fromString('::ffff:c0a8:0164');
         self::assertEquals('::ffff:192.168.1.100', $ip4->toString());
 
         // the other way around
-        $ip4 = IPv6Address::fromString("fc00::192.168.1.100");
+        $ip4 = IPv6Address::fromString('fc00::192.168.1.100');
         self::assertEquals('fc00::c0a8:164', $ip4->toString());
     }
 

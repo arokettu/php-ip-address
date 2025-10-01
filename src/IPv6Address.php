@@ -16,7 +16,7 @@ final readonly class IPv6Address implements AnyIPAddress
     private const BYTES = 16;
 
     public function __construct(
-        public string $bytes
+        public string $bytes,
     ) {
         if (\strlen($bytes) !== self::BYTES) {
             throw new DomainException('IPv6 address must be exactly 16 bytes');

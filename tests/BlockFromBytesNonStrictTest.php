@@ -10,7 +10,7 @@ use Arokettu\IP\IPv6Block;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 
-class BlockFromBytesNonStrictTest extends TestCase
+final class BlockFromBytesNonStrictTest extends TestCase
 {
     public function testV4NonStrictBytes(): void
     {
@@ -35,7 +35,7 @@ class BlockFromBytesNonStrictTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Base address for the IPv4 block must be exactly 4 bytes');
 
-        IPv4Block::fromBytes("abcdef", 8);
+        IPv4Block::fromBytes('abcdef', 8);
     }
 
     public function testV4Prefix(): void
@@ -43,7 +43,7 @@ class BlockFromBytesNonStrictTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('IPv4 prefix must be in range 0-32');
 
-        IPv4Block::fromBytes("abcd", 64);
+        IPv4Block::fromBytes('abcd', 64);
     }
 
     public function testV4NegativePrefix(): void
@@ -51,7 +51,7 @@ class BlockFromBytesNonStrictTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Negative prefix for the IPv4 block must be greater than or equal to -32');
 
-        IPv4Block::fromBytes("abcd", -64);
+        IPv4Block::fromBytes('abcd', -64);
     }
 
     public function testV6NonStrictBytes(): void
@@ -77,7 +77,7 @@ class BlockFromBytesNonStrictTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Base address for the IPv6 block must be exactly 16 bytes');
 
-        IPv6Block::fromBytes("abcdef", 8);
+        IPv6Block::fromBytes('abcdef', 8);
     }
 
     public function testV6Prefix(): void
@@ -85,7 +85,7 @@ class BlockFromBytesNonStrictTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('IPv6 prefix must be in range 0-128');
 
-        IPv6Block::fromBytes("abcdabcdabcdabcd", 300);
+        IPv6Block::fromBytes('abcdabcdabcdabcd', 300);
     }
 
     public function testV6NegativePrefix(): void
@@ -93,7 +93,7 @@ class BlockFromBytesNonStrictTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Negative prefix for the IPv6 block must be greater than or equal to -128');
 
-        IPv6Block::fromBytes("abcdabcdabcdabcd", -300);
+        IPv6Block::fromBytes('abcdabcdabcdabcd', -300);
     }
 
     public function testAutoDetection(): void
@@ -112,6 +112,6 @@ class BlockFromBytesNonStrictTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('IP block was not recognized, 6 is not a valid byte length');
 
-        IPBlock::fromBytes("abcdef", 8);
+        IPBlock::fromBytes('abcdef', 8);
     }
 }

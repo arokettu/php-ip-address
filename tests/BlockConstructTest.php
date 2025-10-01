@@ -9,7 +9,7 @@ use Arokettu\IP\IPv6Block;
 use DomainException;
 use PHPUnit\Framework\TestCase;
 
-class BlockConstructTest extends TestCase
+final class BlockConstructTest extends TestCase
 {
     public function testV4Construct(): void
     {
@@ -22,7 +22,7 @@ class BlockConstructTest extends TestCase
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('Base address for the IPv4 block must be exactly 4 bytes');
 
-        new IPv4Block("abcdef", 8);
+        new IPv4Block('abcdef', 8);
     }
 
     public function testV4ConstructPrefix(): void
@@ -30,7 +30,7 @@ class BlockConstructTest extends TestCase
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('IPv4 prefix must be in range 0-32');
 
-        new IPv4Block("abcd", 64);
+        new IPv4Block('abcd', 64);
     }
 
     public function testV4Normalized(): void
@@ -52,7 +52,7 @@ class BlockConstructTest extends TestCase
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('Base address for the IPv6 block must be exactly 16 bytes');
 
-        new IPv6Block("abcdef", 8);
+        new IPv6Block('abcdef', 8);
     }
 
     public function testV6ConstructPrefix(): void
@@ -60,7 +60,7 @@ class BlockConstructTest extends TestCase
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('IPv6 prefix must be in range 0-128');
 
-        new IPv6Block("abcdabcdabcdabcd", 300);
+        new IPv6Block('abcdabcdabcdabcd', 300);
     }
 
     public function testV6Normalized(): void

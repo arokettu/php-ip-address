@@ -15,7 +15,7 @@ final readonly class IPv4Address implements AnyIPAddress
     private const BYTES = 4;
 
     public function __construct(
-        public string $bytes
+        public string $bytes,
     ) {
         if (\strlen($bytes) !== self::BYTES) {
             throw new DomainException('IPv4 address must be exactly 4 bytes');

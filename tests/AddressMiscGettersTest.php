@@ -9,7 +9,7 @@ use Arokettu\IP\IPv6Address;
 use DomainException;
 use PHPUnit\Framework\TestCase;
 
-class AddressMiscGettersTest extends TestCase
+final class AddressMiscGettersTest extends TestCase
 {
     public function testBytes(): void
     {
