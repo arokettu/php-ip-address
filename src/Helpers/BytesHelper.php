@@ -32,7 +32,7 @@ final class BytesHelper
 
             $partial = $prefix % 8;
             if ($partial !== 0) { // byte with bits both set and unset
-                $maskBytes .= \chr(~((1 << (8 - $partial)) - 1));
+                $maskBytes .= \chr(~((1 << (8 - $partial)) - 1) & 0xff);
                 $bytes -= 1;
             }
 
